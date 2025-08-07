@@ -10,7 +10,7 @@ body:
       description: 기능의 목적과 핵심 내용을 설명해주세요.
       placeholder: 예) 사용자 프로필 편집 기능 구현
     validations:
-      required: true
+      required: false
 
   - type: textarea
     id: tasks
@@ -22,15 +22,6 @@ body:
         - [ ] 프로필 이미지 업로드 기능 추가
         - [ ] 수정 API 연동
       value: "- [ ] "
-    validations:
-      required: true
-
-  - type: input
-    id: due
-    attributes:
-      label: ⏰ 마감 예정일
-      description: 해당 작업을 완료할 목표 날짜를 적어주세요.
-      placeholder: "예: 2025-04-20"
     validations:
       required: false
 
