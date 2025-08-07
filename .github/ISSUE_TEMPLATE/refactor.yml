@@ -9,7 +9,7 @@ body:
       label: 🤔 리팩토링 이유
       placeholder: ex) 뷰모델에서 네트워크 로직이 분리되지 않음
     validations:
-      required: true
+      required: false
 
   - type: textarea
     id: scope
@@ -17,7 +17,7 @@ body:
       label: 📦 리팩토링 범위
       placeholder: ex) SearchViewModel, SearchUseCase
     validations:
-      required: true
+      required: false
 
   - type: textarea
     id: effect
