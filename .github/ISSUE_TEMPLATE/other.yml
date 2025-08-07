@@ -9,7 +9,7 @@ body:
       label: 🏷️ 설명
       placeholder: ex) Xcode 빌드 세팅 변경 필요
     validations:
-      required: true
+      required: false
 
   - type: textarea
     id: reason
@@ -27,4 +27,4 @@ body:
       placeholder: |
         - [ ] 설정 파일 수정
     validations:
-      required: true
+      required: false
