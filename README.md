@@ -1,27 +1,12 @@
-# 🚀 프로젝트 이름
+# 🪨 흔들면 돌이 깨지는 돌시계! CRock
 
 ![배너 이미지 또는 로고](링크)
 
-> 간단한 한 줄 소개 – 프로젝트의 핵심 가치 또는 기능
+> 알람이 울리면 폰 안에 돌을 흔들어서 깨야 알람이 끊기는 앱
 
 [![Swift](https://img.shields.io/badge/Swift-5.9-orange.svg)]()
 [![Xcode](https://img.shields.io/badge/Xcode-15.0-blue.svg)]()
 [![License](https://img.shields.io/badge/license-MIT-green.svg)]()
-
----
-
-## 🗂 목차
-- [소개](#소개)
-- [프로젝트 기간](#프로젝트-기간)
-- [기술 스택](#기술-스택)
-- [기능](#기능)
-- [시연](#시연)
-- [폴더 구조](#폴더-구조)
-- [팀 소개](#팀-소개)
-- [Git 컨벤션](#git-컨벤션)
-- [테스트 방법](#테스트-방법)
-- [프로젝트 문서](#프로젝트-문서)
-- [라이선스](#lock_with_ink_pen-license)
 
 ---
 
@@ -33,15 +18,14 @@
 
 
 ## 📆 프로젝트 기간
-- 전체 기간: `YYYY.MM.DD - YYYY.MM.DD`
-- 개발 기간: `YYYY.MM.DD - YYYY.MM.DD`
+- 전체 기간: `2025.08.07 - 2025.08.09`
 
 
 ## 🛠 기술 스택
 
-- Swift / SwiftUI / UIKit / Firebase 등
-- 아키텍처: MVVM / MVC / Clean Architecture 등
-- 기타 도구: Figma, Notion, GitHub Projects 등
+- Swift / SwiftUI
+- 아키텍처: MVVM
+- 기타 도구: Figma, Notion, GitHub Projects
 
 
 ## 🌟 주요 기능
@@ -79,47 +63,16 @@
 
 | 이름 | 역할 | GitHub |
 |------|------|--------|
-| 홍길동 | iOS Developer | [@hong](https://github.com/hong) |
-| 김개발 | PM | [@devkim](https://github.com/devkim) |
+| 주디제이 | PM | [@JUDYLEE-cloud](https://github.com/JUDYLEE-cloud) |
+| 비에라 | Designer | [@hong](https://github.com/hong) |
+| 프랭크 | Developer | [@hong](https://github.com/hong) |
+| 이토 | Developer | [@hong](https://github.com/hong) |
+| 조이드 | Developer | [@hong](https://github.com/hong) |
+| 루트 | Developer | [@hong](https://github.com/hong) |
 
-[🔗 팀 블로그 / 미디엄 링크](https://medium.com/example)
-
-## 🔖 브랜치 전략
-`(예시)`
-- `main`: 배포 가능한 안정 버전
-- `develop`: 통합 개발 브랜치
-- `feature/*`: 기능 개발 브랜치
-- `bugfix/*`: 버그 수정 브랜치
-- `hotfix/*`: 긴급 수정 브랜치
-
-## 🌀 커밋 메시지 컨벤션
-`(예시)`  
-[Gitmoji](https://gitmoji.dev) + [Conventional Commits](https://www.conventionalcommits.org)
-
-### 예시
-- ✨ feat: 로그인 화면 추가
-- 🐛 fix: 홈 진입 시 크래시 수정
-- ♻️ refactor: 데이터 모델 구조 정리
-
-
-## ✅ 테스트 방법
-
-1. 이 저장소를 클론합니다.
-```bash
-git clone https://github.com/yourteam/project.git
-```
-2. `Xcode`로 `.xcodeproj` 또는 `.xcworkspace` 열기
-3. 시뮬레이터 환경 설정: iPhone 15 / iOS 17
-4. `Cmd + R`로 실행 / `Cmd + U`로 테스트 실행
 
 
 ## 📎 프로젝트 문서
 
-- [기획 히스토리](링크)
-- [디자인 히스토리](링크)
-- [기술 문서 (아키텍처 등)](링크)
+- [노션](https://www.notion.so/posacademy/NO-FRANK-2482b843d5af8095b452eb262f975e8b?source=copy_link)
 
-
-## 📝 License
-
-This project is licensed under the ~~[CHOOSE A LICENSE](https://choosealicense.com). and update this line~~
