@@ -9,7 +9,7 @@ body:
       label: ✅ 테스트 대상 기능
       placeholder: 예) 회원가입 - 이메일 유효성 검증
     validations:
-      required: true
+      required: false
 
   - type: textarea
     id: test-checklist
@@ -21,7 +21,7 @@ body:
         - [ ] 서버 에러 시 에러 팝업 출력
       value: "- [ ] "
     validations:
-      required: true
+      required: false
 
   - type: input
     id: test-environment
