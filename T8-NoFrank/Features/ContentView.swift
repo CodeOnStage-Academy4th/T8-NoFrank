@@ -7,18 +7,26 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct LobbyView: View {
+    @EnvironmentObject var router: AppRouter
+    
     var body: some View {
         VStack {
             Image(systemName: "globe")
                 .imageScale(.large)
                 .foregroundStyle(.tint)
-            Text("Hello, world!")
+            Text("This is LobbyView")
+            Button {
+                router.currentScreen = .sub
+            } label: {
+                Text("Go to SubView")
+            }
+
         }
         .padding()
     }
 }
 
 #Preview {
-    ContentView()
+    LobbyView()
 }

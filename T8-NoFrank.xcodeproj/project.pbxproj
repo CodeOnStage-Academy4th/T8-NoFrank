@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXFileReference section */
-		8B7A7A102E44DE5800FDA06F /* T8-NoFrank.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "T8-NoFrank.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8B7A7AA72E44DFBB00FDA06F /* T8-NoFrank.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = "T8-NoFrank.app"; path = "/Users/judy/Desktop/Swift-Ch/T8-NoFrank/build/Debug-iphoneos/T8-NoFrank.app"; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -33,16 +33,7 @@
 			isa = PBXGroup;
 			children = (
 				8B7A7A122E44DE5800FDA06F /* T8-NoFrank */,
-				8B7A7A112E44DE5800FDA06F /* Products */,
 			);
-			sourceTree = "<group>";
-		};
-		8B7A7A112E44DE5800FDA06F /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				8B7A7A102E44DE5800FDA06F /* T8-NoFrank.app */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -67,7 +58,7 @@
 			packageProductDependencies = (
 			);
 			productName = "T8-NoFrank";
-			productReference = 8B7A7A102E44DE5800FDA06F /* T8-NoFrank.app */;
+			productReference = 8B7A7AA72E44DFBB00FDA06F /* T8-NoFrank.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -95,7 +86,7 @@
 			mainGroup = 8B7A7A072E44DE5800FDA06F;
 			minimizedProjectReferenceProxies = 1;
 			preferredProjectObjectVersion = 77;
-			productRefGroup = 8B7A7A112E44DE5800FDA06F /* Products */;
+			productRefGroup = 8B7A7A072E44DE5800FDA06F;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
