@@ -9,7 +9,7 @@ body:
       label: 📄 증상 설명
       placeholder: 예) 피드 새로고침 시 앱이 종료됩니다.
     validations:
-      required: true
+      required: false
 
   - type: textarea
     id: steps
@@ -20,7 +20,7 @@ body:
         2. 화면을 아래로 당김
         3. Crash 발생
     validations:
-      required: true
+      required: false
 
   - type: input
     id: device
