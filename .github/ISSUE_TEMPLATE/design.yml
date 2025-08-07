@@ -11,22 +11,3 @@ body:
       placeholder: ex) 하단 탭바를 새 디자인으로 교체
     validations:
       required: true
-
-  - type: textarea
-    id: tasks
-    attributes:
-      label: 📋 작업 항목
-      value: "- [ ] "
-      placeholder: |
-        - [ ] UI 구성 변경
-        - [ ] 애니메이션 처리
-    validations:
-      required: true
-
-  - type: input
-    id: figma
-    attributes:
-      label: 🎨 Figma 링크
-      placeholder: ex) https://figma.com/file/...
-    validations:
-      required: false
