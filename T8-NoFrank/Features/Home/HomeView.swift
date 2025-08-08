@@ -34,7 +34,7 @@ struct HomeView: View {
                     .edgesIgnoringSafeArea(.all)
                 
                 if isEnabled {
-                    MovingRockView()
+                    MovingRockView(isBreakable: false)
                 } else {
                     Image("RockChain")
                         .resizable()
