@@ -73,7 +73,7 @@ struct AlarmSettingView: View {
            
            if isAlarmEnabled {
                // 기존 노티피케이션 취소
-               AlarmCancelService.cancelWeeklyBurstAll(weekdays: weekdays, hour: hour, minute: minute, second: 0, totalCount: 8)
+               NotificationService.cancelAllNotifications()
                
                // 새로운 노티피케이션 스케줄링
                NotificationService.scheduleWeeklyBurst(
