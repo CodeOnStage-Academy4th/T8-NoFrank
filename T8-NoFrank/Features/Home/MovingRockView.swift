@@ -72,6 +72,10 @@ struct MovingRockView: View {
         }
         .overlay {
             ZStack {
+                Image("TumbleWeedLayer")
+                    .resizable()
+                    .scaledToFill()
+                    .opacity(!isBreakable ? 1 : 0)
                 Image("DustLayer1")
                     .resizable()
                     .scaledToFill()
