@@ -13,9 +13,7 @@ final class MotionManager {
     private let shakeCooldown: TimeInterval
     private var _lastShakeAt: Date  // .now()랑 coolDown만큼 차이나는지 비교되는지 변수
 
-    private let stopTimeout: TimeInterval
     private let startThreshold: Double
-    private let stopThreshold: Double
     private let referenceFrame: CMAttitudeReferenceFrame
 
     static let shared = MotionManager()
@@ -24,10 +22,8 @@ final class MotionManager {
 
     private init(
         updateInterval: TimeInterval = 1.0 / 60.0,
-        shakeCooldown: TimeInterval = 0.1,
-        stopTimeout: TimeInterval = 0.25,
-        startThreshold: Double = 2.0,
-        stopThreshold: Double = 1.2,
+        shakeCooldown: TimeInterval = 0.15,
+        startThreshold: Double = 0.6,
         referenceFrame: CMAttitudeReferenceFrame = .xArbitraryZVertical
     ) {
         var cont: AsyncStream<Int>.Continuation!
@@ -49,9 +45,7 @@ final class MotionManager {
         self.updateInterval = updateInterval
         self.shakeCooldown = shakeCooldown
         self._lastShakeAt = .distantPast
-        self.stopTimeout = stopTimeout
         self.startThreshold = startThreshold
-        self.stopThreshold = stopThreshold
         self.referenceFrame = referenceFrame
     }
 
