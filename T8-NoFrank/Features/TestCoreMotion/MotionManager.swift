@@ -3,23 +3,23 @@ import Foundation
 
 final class MotionManager {
     static let shared = MotionManager()
-    let degreesStream: AsyncStream<Int>
+    let shakeDegreesStream: AsyncStream<Int>
 
     private let motionManager = CMMotionManager()
 
-    private var degreesContinuation: AsyncStream<Int>.Continuation?
+    private var shakeDegreesContinuation: AsyncStream<Int>.Continuation?
     
     private var shakeCooldown: TimeInterval = 0.35
-    private var _lastShakeAt: Date = .distantPast  // .now()랑 coolDown만큼 차이나는지 비교되는 변수
+    private var _lastShakeAt: Date = .distantPast  // .now()랑 coolDown만큼 차이나는지 비교되는지 변수
 
     private init() {
         var cont: AsyncStream<Int>.Continuation!
-        self.degreesStream = AsyncStream<Int>(
+        self.shakeDegreesStream = AsyncStream<Int>(
             bufferingPolicy: .bufferingNewest(1)
         ) { c in
             cont = c
         }
-        self.degreesContinuation = cont
+        self.shakeDegreesContinuation = cont
     }
 
     func start(
@@ -69,11 +69,11 @@ final class MotionManager {
             (Int((atan2(ay, ax) * -180.0 / .pi).rounded()) + 270) % 360
 
         _lastShakeAt = now
-        degreesContinuation?.yield(degrees)
+        shakeDegreesContinuation?.yield(degrees)
     }
 
     deinit {
-        degreesContinuation?.finish()
+        shakeDegreesContinuation?.finish()
         stopAll()
     }
 }

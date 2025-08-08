@@ -35,7 +35,7 @@ struct MotionTestView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .task {
             shakeManager.start(updateInterval: 1.0 / 60.0, shakeThreshold: 2.0)
-            for await deg in shakeManager.degreesStream {
+            for await deg in shakeManager.shakeDegreesStream {
                 await handleShakeDegree(deg)
             }
         }
