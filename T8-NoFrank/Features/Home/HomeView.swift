@@ -16,59 +16,67 @@ struct HomeView: View {
     
     var body: some View {
         NavigationStack{
-            VStack {
-                Button("임시 토글") {
-                    isEnabled.toggle()
-                }
-                .padding(.top, 20)
-                
-                ZStack(alignment: .center) {
-                    Button {
-                        isModal.toggle()
-                    } label: {
-                        VStack(spacing: 0){
-                            Text("월 화 수 목 금 토 일")
-                                .font(.system(size: 20, weight: .bold))
-                                .foregroundStyle(.white)
-                                .frame(width: 150, height: 30)
-                                .padding()
-                            Text("\(Time)")
-                                .font(.system(size: 60, weight: .bold))
-                                .foregroundStyle(.white)
-                                .frame(width: 250, height: 60)
-                                .padding(.vertical, 10)
-                        }
+            ZStack{
+                Image("Home_Background")
+                Color.black
+                    .opacity(0.7)
+                    .edgesIgnoringSafeArea(.all)
+                VStack {
+                    Button("임시 토글") {
+                        isEnabled.toggle()
                     }
-                    .background(.brown)
-                    .cornerRadius(10)
-                }
-                .padding(.top, 30)
-                
-                Spacer()
-                
-                if isEnabled {
-                    Image("Rock_Default")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 270, height: 270)
-                        .padding(.bottom, 200)
-                } else {
-                    Circle()
-                        .fill(Color.gray)
-                        .frame(width: 270, height: 270)
-                        .padding(.bottom, 200)
+                    .padding(.top, 100)
+                    
+                    ZStack(alignment: .center) {
+                        Button {
+                            isModal.toggle()
+                        } label: {
+                            VStack(spacing: 0){
+                                Text("일 월 화 수 목 금 토")
+                                    .font(.system(size: 20, weight: .bold))
+                                    .foregroundStyle(.white)
+                                    .padding()
+                                Text("오전 \(Time)")
+                                    .font(.system(size: 40, weight: .bold))
+                                    .foregroundStyle(.white)
+                                    .padding(.vertical, 10)
+                            }
+                        }
+                        .frame(width: 260, height: 144)
+                        .background(.black.opacity(0.48))
+                        .cornerRadius(30)
+                    }
+                    .padding(.top, 30)
+                    
+                    Spacer()
+                    
+                    if isEnabled {
+                        Image("RockDefault")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 270, height: 270)
+                            .padding(.bottom, 250)
+                    } else {
+                        Image("Rock_Default")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 270, height: 270)
+                            .padding(.bottom, 250)
+                    }
                 }
             }
         }
         .sheet(isPresented: $isModal) {
-            AlarmSettingView()
-                .navigationTitle("알람 편집")
-                        .navigationBarTitleDisplayMode(.inline)
-                        .toolbar {
-                            ToolbarItem(placement: .navigationBarLeading) {
-                                Text("back")
-                            }
+            NavigationStack {
+                AlarmSettingView()
+                    .navigationTitle("알람 편집")
+                    .navigationBarTitleDisplayMode(.inline)
+                    .toolbar {
+                        ToolbarItem(placement: .navigationBarLeading) {
+                            Text("back")
                         }
+                    }
+            }
         }
     }
 }

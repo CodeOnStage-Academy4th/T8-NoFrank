@@ -8,20 +8,44 @@
 import SwiftUI
 
 struct AlarmSettingView: View {
-    @State var date: Date = Date()
+    struct DayItem: Identifiable {
+        let id = UUID()
+        let name: String
+        var isSelected: Bool
+    }
+    
+    @State var time: Date = Date()
+    @State private var days: [DayItem] = [
+        DayItem(name: "일요일", isSelected: false),
+        DayItem(name: "월요일", isSelected: false),
+        DayItem(name: "화요일", isSelected: false),
+        DayItem(name: "수요일", isSelected: false),
+        DayItem(name: "목요일", isSelected: false),
+        DayItem(name: "금요일", isSelected: false),
+        DayItem(name: "토요일", isSelected: false)
+    ]
     
     var body: some View {
-        NavigationStack{
-            VStack{
-                ZStack {
-                    Color.brown.edgesIgnoringSafeArea(.all)
+        VStack{
+            ZStack {
+                Color.white.edgesIgnoringSafeArea(.all)
+                VStack{
                     DatePicker(
                         "",
-                        selection: $date,
+                        selection: $time,
                         displayedComponents: [.hourAndMinute]
                     )
+                    .border(Color.gray, width: 1)
                     .datePickerStyle(.wheel)
                     .labelsHidden()
+                    
+                    List {
+                        ForEach($days) { $day in
+                            Toggle(day.name, isOn: $day.isSelected)
+                        }
+                    }
+                    .scrollContentBackground(.hidden)
+                    .background(Color.white)
                 }
             }
         }
@@ -29,5 +53,5 @@ struct AlarmSettingView: View {
 }
 
 #Preview {
-    HomeView()
+    AlarmSettingView()
 }
