@@ -6,9 +6,14 @@
 //
 
 import SwiftUI
+import WidgetKit
+
+enum AppConstants {
+    static let appGroupID = "group.CRockWidget" // TODO: replace with your real App Group ID
+}
 
 struct HomeView: View {
-    @AppStorage("isAlarmEnabled") private var isEnabled: Bool = false
+    @AppStorage("isAlarmEnabled", store: UserDefaults(suiteName: AppConstants.appGroupID)!) private var isEnabled: Bool = false
     @State private var isAnimating: Bool = false
     @State private var isModal: Bool = false
     @State private var Time: String = "00:00"
@@ -52,6 +57,9 @@ struct HomeView: View {
                     Image("RotationGrass")
                         .resizable()
                         .scaledToFit()
+                        .onAppear {
+                                    WidgetCenter.shared.reloadAllTimelines()
+                                }
                     
                 } else {
                     Image("RockChain")
@@ -59,6 +67,9 @@ struct HomeView: View {
                         .scaledToFit()
                         .frame(width: 455, height: 342)
                         .padding(.top, 65)
+                        .onAppear {
+                                    WidgetCenter.shared.reloadAllTimelines()
+                                }
                     
                 }
                 
@@ -95,19 +106,20 @@ struct HomeView: View {
             if newValue == false {
                 persistAlarm()
             }
+            WidgetCenter.shared.reloadAllTimelines()
         }
         .onChange(of: isEnabled) { newValue in
             
-            UserDefaults.standard.set(alarmTime, forKey: "alarmTime")
+            UserDefaults(suiteName: AppConstants.appGroupID)!.set(alarmTime, forKey: "alarmTime")
             let comps = Calendar.current.dateComponents([.hour, .minute], from: alarmTime)
             let hour = comps.hour ?? -1
             let minute = comps.minute ?? -1
             if comps.hour != nil && comps.minute != nil {
-                UserDefaults.standard.set(hour, forKey: "alarmHour")
-                UserDefaults.standard.set(minute, forKey: "alarmMinute")
+                UserDefaults(suiteName: AppConstants.appGroupID)!.set(hour, forKey: "alarmHour")
+                UserDefaults(suiteName: AppConstants.appGroupID)!.set(minute, forKey: "alarmMinute")
             }
             let selectedNames = alarmDays.filter { $0.isSelected }.map { $0.name }
-            UserDefaults.standard.set(selectedNames, forKey: "alarmSelectedDays")
+            UserDefaults(suiteName: AppConstants.appGroupID)!.set(selectedNames, forKey: "alarmSelectedDays")
             
             
             let weekdays: Set<Int> = Set(alarmDays.enumerated().compactMap { index, day in
@@ -129,6 +141,7 @@ struct HomeView: View {
                 )
                 print("노티 추가됨")
             }
+            WidgetCenter.shared.reloadAllTimelines()
         }
     }
     
@@ -138,18 +151,30 @@ struct HomeView: View {
         formatter.dateFormat = "HH:mm"
         return formatter.string(from: alarmTime)
     }
+    private func checkNotificationNavigation() {
+        if UserDefaults(suiteName: AppConstants.appGroupID)!.bool(forKey: "shouldNavigate") {
+            shouldNavigate = true
+            targetScreen = UserDefaults(suiteName: AppConstants.appGroupID)!.string(forKey: "targetScreen") ?? ""
+            
+            // 신호 초기화
+            UserDefaults(suiteName: AppConstants.appGroupID)!.set(false, forKey: "shouldNavigate")
+            UserDefaults(suiteName: AppConstants.appGroupID)!.removeObject(forKey: "targetScreen")
+            
+            print("노티피케이션으로 \(targetScreen) 화면으로 이동")
+        }
+    }
     
     private func persistAlarm() {
-        UserDefaults.standard.set(alarmTime, forKey: "alarmTime")
+        UserDefaults(suiteName: AppConstants.appGroupID)!.set(alarmTime, forKey: "alarmTime")
         let comps = Calendar.current.dateComponents([.hour, .minute], from: alarmTime)
         let hour = comps.hour ?? -1
         let minute = comps.minute ?? -1
         if comps.hour != nil && comps.minute != nil {
-            UserDefaults.standard.set(hour, forKey: "alarmHour")
-            UserDefaults.standard.set(minute, forKey: "alarmMinute")
+            UserDefaults(suiteName: AppConstants.appGroupID)!.set(hour, forKey: "alarmHour")
+            UserDefaults(suiteName: AppConstants.appGroupID)!.set(minute, forKey: "alarmMinute")
         }
         let selectedNames = alarmDays.filter { $0.isSelected }.map { $0.name }
-        UserDefaults.standard.set(selectedNames, forKey: "alarmSelectedDays")
+        UserDefaults(suiteName: AppConstants.appGroupID)!.set(selectedNames, forKey: "alarmSelectedDays")
         
         print("[Alarm][persist] time=\(alarmTime) (hour=\(hour), minute=\(minute))")
         print("[Alarm][persist] days=\(selectedNames)")
@@ -179,20 +204,20 @@ struct HomeView: View {
     }
     
     private func loadAlarm() {
-        if let hour = UserDefaults.standard.object(forKey: "alarmHour") as? Int,
-           let minute = UserDefaults.standard.object(forKey: "alarmMinute") as? Int {
+        if let hour = UserDefaults(suiteName: AppConstants.appGroupID)!.object(forKey: "alarmHour") as? Int,
+           let minute = UserDefaults(suiteName: AppConstants.appGroupID)!.object(forKey: "alarmMinute") as? Int {
             var comps = Calendar.current.dateComponents([.year, .month, .day], from: Date())
             comps.hour = hour
             comps.minute = minute
             if let rebuilt = Calendar.current.date(from: comps) {
                 alarmTime = rebuilt
             }
-        } else if let savedTime = UserDefaults.standard.object(forKey: "alarmTime") as? Date {
+        } else if let savedTime = UserDefaults(suiteName: AppConstants.appGroupID)!.object(forKey: "alarmTime") as? Date {
             alarmTime = savedTime
         }
         print("[Alarm][load] time=\(alarmTime)")
         
-        if let names = UserDefaults.standard.stringArray(forKey: "alarmSelectedDays") {
+        if let names = UserDefaults(suiteName: AppConstants.appGroupID)!.stringArray(forKey: "alarmSelectedDays") {
             for i in alarmDays.indices {
                 alarmDays[i].isSelected = names.contains(alarmDays[i].name)
             }

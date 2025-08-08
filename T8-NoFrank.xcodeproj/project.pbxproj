@@ -6,11 +6,52 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		327EF0F52E46B0D400EE7CEA /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 327EF0F42E46B0D400EE7CEA /* WidgetKit.framework */; };
+		327EF0F72E46B0D400EE7CEA /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 327EF0F62E46B0D400EE7CEA /* SwiftUI.framework */; };
+		327EF1082E46B0D600EE7CEA /* CRockWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 327EF0F22E46B0D400EE7CEA /* CRockWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		327EF1062E46B0D600EE7CEA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8B7A7A082E44DE5800FDA06F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 327EF0F12E46B0D400EE7CEA;
+			remoteInfo = CRockWidgetExtension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		327EF10D2E46B0D600EE7CEA /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				327EF1082E46B0D600EE7CEA /* CRockWidgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		327EEB352E461E6D00EE7CEA /* T8-NoFrank.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "T8-NoFrank.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		327EF0F22E46B0D400EE7CEA /* CRockWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = CRockWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		327EF0F42E46B0D400EE7CEA /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		327EF0F62E46B0D400EE7CEA /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		327EF1762E46BDF000EE7CEA /* CRockWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CRockWidgetExtension.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		327EF10C2E46B0D600EE7CEA /* Exceptions for "CRockWidget" folder in "CRockWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 327EF0F12E46B0D400EE7CEA /* CRockWidgetExtension */;
+		};
 		8B7A7C412E465D9900FDA06F /* Exceptions for "T8-NoFrank" folder in "T8-NoFrank" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -21,6 +62,14 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		327EF0F82E46B0D400EE7CEA /* CRockWidget */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				327EF10C2E46B0D600EE7CEA /* Exceptions for "CRockWidget" folder in "CRockWidgetExtension" target */,
+			);
+			path = CRockWidget;
+			sourceTree = "<group>";
+		};
 		8B7A7A122E44DE5800FDA06F /* T8-NoFrank */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
@@ -32,6 +81,15 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		327EF0EF2E46B0D400EE7CEA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				327EF0F72E46B0D400EE7CEA /* SwiftUI.framework in Frameworks */,
+				327EF0F52E46B0D400EE7CEA /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8B7A7A0D2E44DE5800FDA06F /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -42,17 +100,52 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		327EF0F32E46B0D400EE7CEA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				327EF0F42E46B0D400EE7CEA /* WidgetKit.framework */,
+				327EF0F62E46B0D400EE7CEA /* SwiftUI.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		8B7A7A072E44DE5800FDA06F = {
 			isa = PBXGroup;
 			children = (
+				327EF1762E46BDF000EE7CEA /* CRockWidgetExtension.entitlements */,
 				8B7A7A122E44DE5800FDA06F /* T8-NoFrank */,
 				327EEB352E461E6D00EE7CEA /* T8-NoFrank.app */,
+				327EF0F22E46B0D400EE7CEA /* CRockWidgetExtension.appex */,
+				327EF0F82E46B0D400EE7CEA /* CRockWidget */,
+				327EF0F32E46B0D400EE7CEA /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		327EF0F12E46B0D400EE7CEA /* CRockWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 327EF1092E46B0D600EE7CEA /* Build configuration list for PBXNativeTarget "CRockWidgetExtension" */;
+			buildPhases = (
+				327EF0EE2E46B0D400EE7CEA /* Sources */,
+				327EF0EF2E46B0D400EE7CEA /* Frameworks */,
+				327EF0F02E46B0D400EE7CEA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				327EF0F82E46B0D400EE7CEA /* CRockWidget */,
+			);
+			name = CRockWidgetExtension;
+			packageProductDependencies = (
+			);
+			productName = CRockWidgetExtension;
+			productReference = 327EF0F22E46B0D400EE7CEA /* CRockWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		8B7A7A0F2E44DE5800FDA06F /* T8-NoFrank */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8B7A7A1B2E44DE5800FDA06F /* Build configuration list for PBXNativeTarget "T8-NoFrank" */;
@@ -60,10 +153,12 @@
 				8B7A7A0C2E44DE5800FDA06F /* Sources */,
 				8B7A7A0D2E44DE5800FDA06F /* Frameworks */,
 				8B7A7A0E2E44DE5800FDA06F /* Resources */,
+				327EF10D2E46B0D600EE7CEA /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				327EF1072E46B0D600EE7CEA /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				8B7A7A122E44DE5800FDA06F /* T8-NoFrank */,
@@ -85,6 +180,9 @@
 				LastSwiftUpdateCheck = 1640;
 				LastUpgradeCheck = 1640;
 				TargetAttributes = {
+					327EF0F12E46B0D400EE7CEA = {
+						CreatedOnToolsVersion = 16.4;
+					};
 					8B7A7A0F2E44DE5800FDA06F = {
 						CreatedOnToolsVersion = 16.4;
 					};
@@ -105,11 +203,19 @@
 			projectRoot = "";
 			targets = (
 				8B7A7A0F2E44DE5800FDA06F /* T8-NoFrank */,
+				327EF0F12E46B0D400EE7CEA /* CRockWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		327EF0F02E46B0D400EE7CEA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8B7A7A0E2E44DE5800FDA06F /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -120,6 +226,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		327EF0EE2E46B0D400EE7CEA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8B7A7A0C2E44DE5800FDA06F /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -129,7 +242,79 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		327EF1072E46B0D600EE7CEA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 327EF0F12E46B0D400EE7CEA /* CRockWidgetExtension */;
+			targetProxy = 327EF1062E46B0D600EE7CEA /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		327EF10A2E46B0D600EE7CEA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = CRockWidgetExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 8ZUB5C2R66;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = CRockWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = CRockWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.CRock.T8-NoFrank.CRockWidget";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		327EF10B2E46B0D600EE7CEA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = CRockWidgetExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 8ZUB5C2R66;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = CRockWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = CRockWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.CRock.T8-NoFrank.CRockWidget";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
 		8B7A7A192E44DE5800FDA06F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -256,6 +441,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "T8-NoFrank/T8-NoFrank.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 8ZUB5C2R66;
@@ -275,7 +461,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.judyj.T8-NoFrank";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.CRock.T8-NoFrank";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -292,6 +478,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "T8-NoFrank/T8-NoFrank.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 8ZUB5C2R66;
@@ -311,7 +498,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.judyj.T8-NoFrank";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.CRock.T8-NoFrank";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -326,6 +513,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		327EF1092E46B0D600EE7CEA /* Build configuration list for PBXNativeTarget "CRockWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				327EF10A2E46B0D600EE7CEA /* Debug */,
+				327EF10B2E46B0D600EE7CEA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		8B7A7A0B2E44DE5800FDA06F /* Build configuration list for PBXProject "T8-NoFrank" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
