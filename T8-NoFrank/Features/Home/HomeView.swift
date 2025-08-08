@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct HomeView: View {
-    @State private var isEnabled: Bool = false
+    @AppStorage("isAlarmEnabled") private var isEnabled: Bool = false
     @State private var isAnimating: Bool = false
     @State private var isModal: Bool = false
     @State private var Time: String = "00:00"
@@ -85,21 +85,41 @@ struct HomeView: View {
     
     private func persistAlarm() {
         UserDefaults.standard.set(alarmTime, forKey: "alarmTime")
+        let comps = Calendar.current.dateComponents([.hour, .minute], from: alarmTime)
+        let hour = comps.hour ?? -1
+        let minute = comps.minute ?? -1
+        if comps.hour != nil && comps.minute != nil {
+            UserDefaults.standard.set(hour, forKey: "alarmHour")
+            UserDefaults.standard.set(minute, forKey: "alarmMinute")
+        }
         let selectedNames = alarmDays.filter { $0.isSelected }.map { $0.name }
-        print(selectedNames)
-        UserDefaults.standard.set(selectedNames, forKey: "alarmSelectedDays") // JSON 필요 없음
+        UserDefaults.standard.set(selectedNames, forKey: "alarmSelectedDays")
+        
+        print("[Alarm][persist] time=\(alarmTime) (hour=\(hour), minute=\(minute))")
+        print("[Alarm][persist] days=\(selectedNames)")
     }
         
     private func loadAlarm() {
-        if let savedTime = UserDefaults.standard.object(forKey: "alarmTime") as? Date {
+        if let hour = UserDefaults.standard.object(forKey: "alarmHour") as? Int,
+           let minute = UserDefaults.standard.object(forKey: "alarmMinute") as? Int {
+            var comps = Calendar.current.dateComponents([.year, .month, .day], from: Date())
+            comps.hour = hour
+            comps.minute = minute
+            if let rebuilt = Calendar.current.date(from: comps) {
+                alarmTime = rebuilt
+            }
+        } else if let savedTime = UserDefaults.standard.object(forKey: "alarmTime") as? Date {
+            // Fallback for older saved value
             alarmTime = savedTime
         }
+        print("[Alarm][load] time=\(alarmTime)")
+        
         if let names = UserDefaults.standard.stringArray(forKey: "alarmSelectedDays") {
             for i in alarmDays.indices {
                 alarmDays[i].isSelected = names.contains(alarmDays[i].name)
             }
+            print("[Alarm][load] days=\(names)")
         }
-        print("alarmDays: \(alarmDays)")
     }
 }
 
