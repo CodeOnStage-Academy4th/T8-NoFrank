@@ -11,8 +11,30 @@ import QuartzCore
 
 struct MotionTestView: View {
     private let shakeManager = MotionManager.shared
-    private let rockWidth: CGFloat = 230
-    private let rockHeight: CGFloat = 233
+    private var rockWidth: CGFloat {
+        switch rockPhase {
+        case 0: return 188.95
+        case 1: return 187.32
+        case 2: return 177.82
+        case 3: return 163.5
+        case 4: return 153.5
+        case 5: return 128.5
+        default: return 188.95
+        }
+    }
+    
+    private var rockHeight: CGFloat {
+        switch rockPhase {
+        case 0: return 230
+        case 1: return 220.26
+        case 2: return 195.31
+        case 3: return 178
+        case 4: return 175.5
+        case 5: return 123.5
+        default: return 230
+        }
+    }
+    
     @State private var containerSize: CGSize = .zero
     @State private var rockOffset: CGSize = .zero
     @State private var isShaking: Bool = false
@@ -20,7 +42,11 @@ struct MotionTestView: View {
     @State private var tiltAccel: CGVector = .zero
     @State private var physicsTask: Task<Void, Never>? = nil
     
-    @State private var rockPhase: Double = 0
+    private var rockImageName: String {
+        "Rock\(rockPhase)\(isRockPain ? "Pain" : "")"
+    }
+    @State private var rockPhase: Int = 0
+    @State private var rockPhaseCount: Int = 0
     @State private var isRockPain: Bool = false
     @State private var isRockPainTask: Task<Void, Never>? = nil
     
@@ -29,7 +55,7 @@ struct MotionTestView: View {
             GeometryReader { proxy in
                 ZStack {
                     Color.clear
-                    Image(.rock0)
+                    Image(rockImageName)
                         .resizable()
                         .scaledToFit()
                         .frame(width: rockWidth, height: rockHeight)
@@ -63,10 +89,10 @@ struct MotionTestView: View {
     
     private func handleShakeDegree(_ deg: Int) async {
         guard containerSize != .zero else { return }
-        isRockPainTask?.cancel()
         isRockPain = true
         isRockPainTask = Task { @MainActor in
             try? await Task.sleep(for: .seconds(1))
+            isRockPainTask?.cancel()
             isRockPain = false
         }
         isShaking = true
@@ -95,6 +121,15 @@ struct MotionTestView: View {
         UIImpactFeedbackGenerator(style: .medium).impactOccurred()
         
         try? await Task.sleep(for: .seconds(0.1))
+        
+        if rockPhase != 5 {
+            rockPhaseCount += 1
+            if rockPhaseCount > 10 {
+                rockPhase += 1
+                rockPhaseCount = 0
+            }
+        }
+        
         isShaking = false
     }
     
@@ -174,3 +209,4 @@ struct MotionTestView: View {
         rockOffset = CGSize(width: px, height: py)
     }
 }
+
