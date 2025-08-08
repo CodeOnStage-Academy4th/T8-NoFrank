@@ -10,9 +10,22 @@
 		327EEB352E461E6D00EE7CEA /* T8-NoFrank.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "T8-NoFrank.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		8B7A7C412E465D9900FDA06F /* Exceptions for "T8-NoFrank" folder in "T8-NoFrank" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 8B7A7A0F2E44DE5800FDA06F /* T8-NoFrank */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		8B7A7A122E44DE5800FDA06F /* T8-NoFrank */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				8B7A7C412E465D9900FDA06F /* Exceptions for "T8-NoFrank" folder in "T8-NoFrank" target */,
+			);
 			path = "T8-NoFrank";
 			sourceTree = "<group>";
 		};
@@ -248,6 +261,7 @@
 				DEVELOPMENT_TEAM = 8ZUB5C2R66;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "T8-NoFrank/Info.plist";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "바람 감지를 위해 마이크 접근이 필요합니다.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -277,6 +291,7 @@
 				DEVELOPMENT_TEAM = 8ZUB5C2R66;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "T8-NoFrank/Info.plist";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "바람 감지를 위해 마이크 접근이 필요합니다.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
