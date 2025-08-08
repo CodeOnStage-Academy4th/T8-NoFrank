@@ -11,6 +11,7 @@ import SwiftUI
 enum AppScreen {
     case lobby
     case sub
+    case stonedust
 }
 
 class AppRouter: ObservableObject {
