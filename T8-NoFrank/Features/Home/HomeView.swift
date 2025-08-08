@@ -268,7 +268,7 @@ struct AlarmCard: View {
                         ForEach(days.indices, id: \.self) { idx in
                             let label = days[idx]
                             Text(label)
-                                .font(.headline)
+                                .font(.custom(Pretendard.regular.rawValue, size: 17))
                                 .fontWeight(selectedDays.contains(label) ? .semibold : .regular)
                                 .foregroundStyle(
                                     !selectedDays.contains(label)
@@ -282,12 +282,12 @@ struct AlarmCard: View {
                     
                     HStack(alignment: .firstTextBaseline, spacing: 8) {
                         Text(amPm)
-                            .font(.title3)
+                            .font(.custom(Pretendard.regular.rawValue, size: 20))
                             .foregroundStyle(isOn ? .white : Color(hex: "#969698"))
                             .opacity(0.9)
                         
                         Text(timeText.isEmpty ? "07:00" : timeText)
-                            .font(.system(size: 30, weight: .heavy, design: .rounded))
+                            .font(.custom(Pretendard.bold.rawValue, size: 30))
                             .foregroundStyle(isOn ? .white : Color(hex: "#969698"))
                     }
                 }
