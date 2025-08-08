@@ -23,9 +23,6 @@ struct HomeView: View {
         .init(name: "토", isSelected: false)
     ]
     
-    @State private var shouldNavigate: Bool = false
-    @AppStorage("targetScreen") private var targetScreen: String = "TurnOffAlarmView" // 여기서 돌 부수는 뷰로 가게 설정
-    
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {
@@ -79,20 +76,6 @@ struct HomeView: View {
         .onAppear { loadAlarm()
             NotificationService.requestAuthorization()
         }
-        .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
-            
-            checkNotificationNavigation()
-        }
-        .fullScreenCover(isPresented: $shouldNavigate) {  // 🔥 sheet 대신 fullScreenCover 사용
-            // 🔥 targetScreen에 따라 다른 화면 표시
-            switch targetScreen {
-            case "TurnOffAlarmView":
-                TurnOffAlarmView()
-            default:
-                Text("알 수 없는 화면 : \(targetScreen)")
-            }
-        }
-        
         .sheet(isPresented: $isModal) {
             NavigationStack {
                 AlarmSettingView(
@@ -154,18 +137,6 @@ struct HomeView: View {
         formatter.locale = Locale(identifier: "ko_KR")
         formatter.dateFormat = "HH:mm"
         return formatter.string(from: alarmTime)
-    }
-    private func checkNotificationNavigation() {
-        if UserDefaults.standard.bool(forKey: "shouldNavigate") {
-            shouldNavigate = true
-            targetScreen = UserDefaults.standard.string(forKey: "targetScreen") ?? ""
-            
-            // 신호 초기화
-            UserDefaults.standard.set(false, forKey: "shouldNavigate")
-            UserDefaults.standard.removeObject(forKey: "targetScreen")
-            
-            print("노티피케이션으로 \(targetScreen) 화면으로 이동")
-        }
     }
     
     private func persistAlarm() {

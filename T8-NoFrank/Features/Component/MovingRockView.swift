@@ -142,9 +142,14 @@ struct MovingRockView: View {
         try? await Task.sleep(for: .seconds(0.1))
         
         if isBreakable {
-            if rockPhase != 5 {
-                rockPhaseCount += 1
-                if rockPhaseCount > 10 {
+            rockPhaseCount += 1
+            if rockPhaseCount > 5 {
+                if rockPhase == 5 {
+                    rockPhase = 0
+                    rockPhaseCount = 0
+                    // 이때 알람꺼지면서 화면 전환
+                    AppRouter.shared.navigate(.stonedust)
+                } else {
                     rockPhase += 1
                     rockPhaseCount = 0
                 }
