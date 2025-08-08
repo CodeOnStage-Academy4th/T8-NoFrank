@@ -9,30 +9,31 @@ import SwiftUI
 
 @main
 struct T8_NoFrankApp: App {
-    @StateObject private var router = AppRouter()
+    @StateObject private var router = AppRouter.shared
     @Environment(\.scenePhase) private var scenePhase
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     
     var body: some Scene {
-        WindowGroup{
-            HomeView()
+        WindowGroup {
+            RootView()
+                .environmentObject(router)
+                .ignoresSafeArea(.all)
         }
-//        WindowGroup {
-//            RootView()
-//                .environmentObject(router)
-//        }
-//        .onChange(of: scenePhase) {
-//            switch scenePhase {
-//            case .background:
-//                print("앱이 백그라운드로 전환됨")
-//            case .inactive:
-//                print("앱이 비활성화됨")
-//            case .active:
-//                print("앱이 포그라운드 상태")
-//            @unknown default:
-//                break
-//            }
-//        }
+        .onChange(of: scenePhase) {
+            switch scenePhase {
+            case .background:
+                print("앱이 백그라운드로 전환됨")
+            case .inactive:
+                if router.currentScreen == .stonedust {
+                    router.currentScreen = .home
+                }
+                print("앱이 비활성화됨")
+            case .active:
+                print("앱이 포그라운드 상태")
+            @unknown default:
+                break
+            }
+        }
     }
 }
 
@@ -42,11 +43,12 @@ struct RootView: View {
     var body: some View {
         Group {
             switch router.currentScreen {
-            case .lobby: LobbyView()
-            case .sub: SubView()
+            case .home: HomeView()
+            case .turnOffAlarm: TurnOffAlarmView()
             case .stonedust: StoneDustView()
             }
-        }    }
+        }
+    }
 }
 
 #Preview {

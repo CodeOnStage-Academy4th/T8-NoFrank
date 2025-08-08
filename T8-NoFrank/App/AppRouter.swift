@@ -9,11 +9,17 @@ import Foundation
 import SwiftUI
 
 enum AppScreen {
-    case lobby
-    case sub
+    case home
+    case turnOffAlarm
     case stonedust
 }
 
-class AppRouter: ObservableObject {
-    @Published var currentScreen: AppScreen = .lobby
+@MainActor
+final class AppRouter: ObservableObject {
+    static let shared = AppRouter()
+    @Published var currentScreen: AppScreen = .home
+
+    func navigate(_ screen: AppScreen) {
+        currentScreen = screen
+    }
 }
