@@ -43,6 +43,7 @@ extension NotificationService {
                 let content = UNMutableNotificationContent()
                 content.title = "CRock"
                 content.body  = "돌 깨러가기" + String(repeating: "🪨", count: i+1)
+                content.userInfo = ["targetScreen": "TestView"]
                 
                 // 어떤 사운드 틀지 정하는 곳
                 if let name = soundName {
@@ -83,7 +84,7 @@ extension NotificationService {
     }
 }
 
-//MARK: -- 노티 배너 누르면 기존에 쌓인 배너도 다 삭제하는 델리게이트
+//MARK: -- 노티 배너 눌렀을 때 로직
 extension NotificationDelegate {
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 didReceive response: UNNotificationResponse,
@@ -94,7 +95,12 @@ extension NotificationDelegate {
 
         // 여기서 알람 화면 전환, 사운드 정지 등 원하는 로직 실행 가능
         print("알림 제거 완료")
-
+        
+        if let targetScreen = response.notification.request.content.userInfo["targetScreen"] as? String {
+                    UserDefaults.standard.set(targetScreen, forKey: "targetScreen")
+                    UserDefaults.standard.set(true, forKey: "shouldNavigate")
+                }
+        
         completionHandler()
     }
 }
