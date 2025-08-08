@@ -20,6 +20,10 @@ struct MotionTestView: View {
     @State private var tiltAccel: CGVector = .zero
     @State private var physicsTask: Task<Void, Never>? = nil
     
+    @State private var rockPhase: Double = 0
+    @State private var isRockPain: Bool = false
+    @State private var isRockPainTask: Task<Void, Never>? = nil
+    
     var body: some View {
         VStack {
             GeometryReader { proxy in
@@ -59,6 +63,12 @@ struct MotionTestView: View {
     
     private func handleShakeDegree(_ deg: Int) async {
         guard containerSize != .zero else { return }
+        isRockPainTask?.cancel()
+        isRockPain = true
+        isRockPainTask = Task { @MainActor in
+            try? await Task.sleep(for: .seconds(1))
+            isRockPain = false
+        }
         isShaking = true
         
         let theta = CGFloat(Double(deg) * .pi / 180)
