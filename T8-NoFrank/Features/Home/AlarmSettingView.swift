@@ -48,6 +48,14 @@ struct AlarmSettingView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         }
         .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button(action: {
+                    dismiss()
+                }, label: {
+                    Text("취소")
+                        .foregroundStyle(Color(hex: "#BE5F1B"))
+                })
+            }
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button(action: {
                     dismiss()

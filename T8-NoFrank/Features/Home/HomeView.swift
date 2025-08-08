@@ -33,7 +33,7 @@ struct HomeView: View {
                     .opacity(0.7)
                     .edgesIgnoringSafeArea(.all)
                 VStack {
-                    AlarmCard(isOn: $isEnabled, timeText: DateFormatter.localizedString(from: alarmTime, dateStyle: .none, timeStyle: .short), selectedDays: alarmDays.filter { $0.isSelected }.map { $0.name }, date: alarmTime) {
+                    AlarmCard(isOn: $isEnabled, timeText: timeTextFormatted, selectedDays: alarmDays.filter { $0.isSelected }.map { $0.name }, date: alarmTime) {
                         isModal.toggle()
                     }
                     .padding(.top, 131)
@@ -61,19 +61,21 @@ struct HomeView: View {
         .sheet(isPresented: $isModal) {
             NavigationStack {
                 AlarmSettingView(time: $alarmTime, days: $alarmDays)
-                    .navigationTitle("알람 편집")
                     .navigationBarTitleDisplayMode(.inline)
+                    .toolbar {
+                        ToolbarItem(placement: .principal) {
+                            Text("알람 편집")
+                                .font(.system(size: 20, weight: .bold))
+                                .foregroundStyle(Color.white)
+                                .padding(.vertical, 30)
+                        }
+                    }
                     .toolbarBackground(Color(hex: "151515"), for: .navigationBar)
                     .toolbarBackground(.visible, for: .navigationBar)
                     .toolbarColorScheme(.dark, for: .navigationBar)
-                    .toolbar {
-                        ToolbarItem(placement: .navigationBarLeading) {
-                            Text("취소")
-                                .foregroundStyle(Color(hex: "#BE5F1B"))
-                        }
-                    }
+                    .toolbarBackground(.hidden, for: .navigationBar)
             }
-            .presentationDetents([.fraction(0.6), .medium, .large])
+            .presentationDetents([.fraction(0.6)])
             .presentationDragIndicator(.visible)
         }
         .onChange(of: isModal) { newValue in
@@ -81,6 +83,13 @@ struct HomeView: View {
                 persistAlarm()
             }
         }
+    }
+    
+    private var timeTextFormatted: String {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "ko_KR")
+        formatter.dateFormat = "HH:mm"
+        return formatter.string(from: alarmTime)
     }
     
     private func persistAlarm() {
@@ -109,7 +118,6 @@ struct HomeView: View {
                 alarmTime = rebuilt
             }
         } else if let savedTime = UserDefaults.standard.object(forKey: "alarmTime") as? Date {
-            // Fallback for older saved value
             alarmTime = savedTime
         }
         print("[Alarm][load] time=\(alarmTime)")
@@ -154,19 +162,25 @@ struct AlarmCard: View {
                             Text(label)
                                 .font(.headline)
                                 .fontWeight(selectedDays.contains(label) ? .semibold : .regular)
-                                .foregroundStyle(selectedDays.contains(label) ? Color(hex: "#BE5F1B") : Color.white.opacity(0.7))
+                                .foregroundStyle(
+                                    !selectedDays.contains(label)
+                                        ? Color(hex: "#969698")
+                                        : (isOn
+                                            ? Color(hex: "#BE5F1B")
+                                            : Color(hex: "#282828"))
+                                )
                         }
                     }
                     
                     HStack(alignment: .firstTextBaseline, spacing: 8) {
                         Text(amPm)
                             .font(.title3)
-                            .foregroundStyle(.white)
+                            .foregroundStyle(isOn ? .white : Color(hex: "#969698"))
                             .opacity(0.9)
                         
                         Text(timeText.isEmpty ? "07:00" : timeText)
                             .font(.system(size: 30, weight: .heavy, design: .rounded))
-                            .foregroundStyle(.white)
+                            .foregroundStyle(isOn ? .white : Color(hex: "#969698"))
                     }
                 }
                 
