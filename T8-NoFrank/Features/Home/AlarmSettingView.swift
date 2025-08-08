@@ -36,7 +36,11 @@ struct AlarmSettingView: View {
                     
                     VStack{
                         Text("요일")
-                            .multilineTextAlignment(.leading)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .foregroundStyle(Color.white)
+                            .font(.custom("Pretendard", size: 19))
+                            .padding(.leading, 30)
+                            .padding(.bottom, 17)
                         HStack {
                             ForEach($days, id: \.name) { $day in
                                 DatePickButton(title: day.name, isSelected: $day.isSelected)
