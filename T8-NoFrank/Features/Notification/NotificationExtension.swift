@@ -14,15 +14,14 @@ extension NotificationService {
     static func scheduleWeeklyBurst(weekdays: Set<Int>,
                                     hour: Int, minute: Int, second: Int,
                                     intervalSec: Int, count: Int,
-                                    baseKey: String = "WEEKLY_BURST",
-                                    title: String = "알람",
-                                    body: String = "일어날 시간입니다.",
-                                    soundName: String? = nil) {
+                                    baseKey: String = "WEEKLY_BURST"
+                                    ) {
 
         let center = UNUserNotificationCenter.current()
         let now = Date()
         let cal = Calendar.current
-
+        let soundName: String? = "NotiSound28sec.caf"
+        
         for w in weekdays {
             // 1) 다음 발생일 계산 (가장 가까운 w 요일의 지정 시:분:초)
             var match = DateComponents()
@@ -42,8 +41,8 @@ extension NotificationService {
                 let comps = cal.dateComponents([.year,.month,.day,.hour,.minute,.second], from: fire)
 
                 let content = UNMutableNotificationContent()
-                content.title = title
-                content.body  = body
+                content.title = "CRock"
+                content.body  = "돌 깨러가기" + String(repeating: "🪨", count: i+1)
                 
                 // 어떤 사운드 틀지 정하는 곳
                 if let name = soundName {

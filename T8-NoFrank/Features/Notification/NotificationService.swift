@@ -43,6 +43,7 @@ final class NotificationDelegate: NSObject, UNUserNotificationCenterDelegate {
 // MARK: -- 노티 삭제 서비스
 struct AlarmCancelService {
     
+    // 모든 노티 제거
     static func cancelWeeklyBurstAll(weekdays: Set<Int>,
                                      hour: Int, minute: Int, second: Int,
                                      totalCount: Int,
@@ -60,7 +61,7 @@ struct AlarmCancelService {
     }
     
     
-    //오늘 날짜의 알람 지우기
+    //오늘 날짜의 노티 지우기
     static func cancelTodayBurst(hour: Int, minute: Int, second: Int,
                                  totalCount: Int,
                                  baseKey: String = "WEEKLY_BURST") {
