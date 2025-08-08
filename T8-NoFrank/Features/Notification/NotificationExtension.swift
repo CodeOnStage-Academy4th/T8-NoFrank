@@ -10,7 +10,7 @@ import SwiftUI
 
 extension NotificationService {
     
-    //MARK: -- 선택한 요일에 요일당 8개의 노티 생성
+    //MARK: -- 선택한 요일에 요일당 8개의 노티 생성 (매주 반복)
     static func scheduleWeeklyBurst(weekdays: Set<Int>,
                                     hour: Int, minute: Int, second: Int,
                                     intervalSec: Int, count: Int,
@@ -43,6 +43,7 @@ extension NotificationService {
                 let content = UNMutableNotificationContent()
                 content.title = "CRock"
                 content.body  = "돌 깨러가기" + String(repeating: "🪨", count: i+1)
+                content.userInfo = ["targetScreen": "TestView"]
                 
                 // 어떤 사운드 틀지 정하는 곳
                 if let name = soundName {
@@ -58,17 +59,23 @@ extension NotificationService {
                 // 예측 가능한 식별자(요일·시·분·초·인덱스)
                 let id = "\(baseKey)_WD\(w)_\(hour)_\(minute)_\(second)_\(i)"
 
-                let trig = UNCalendarNotificationTrigger(dateMatching: comps, repeats: false)
+                // 🔥 매주 반복을 위한 DateComponents 설정
+                var weeklyComps = DateComponents()
+                weeklyComps.weekday = w
+                weeklyComps.hour = hour
+                weeklyComps.minute = minute
+                weeklyComps.second = second
+                
+                let trig = UNCalendarNotificationTrigger(dateMatching: weeklyComps, repeats: true)  // 🔥 repeats: true
                 let req  = UNNotificationRequest(identifier: id, content: content, trigger: trig)
                 
-                
                 center.add(req)
-                
+                print("📅 매주 반복 노티 스케줄링: 요일\(w), 시간\(hour):\(minute), 인덱스\(i)")
             }
         }
     }
 
-
+    //  매주 반복 노티 취소 함수도 수정
     static func cancelWeeklyBurst(weekdays: Set<Int>,
                                   hour: Int, minute: Int, second: Int,
                                   count: Int = 8,
@@ -80,10 +87,11 @@ extension NotificationService {
         }
         UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ids)
         UNUserNotificationCenter.current().removeDeliveredNotifications(withIdentifiers: ids)
+        print("🗑️ 매주 반복 노티 취소: \(ids.count)개")
     }
 }
 
-//MARK: -- 노티 배너 누르면 기존에 쌓인 배너도 다 삭제하는 델리게이트
+//MARK: -- 노티 배너 눌렀을 때 로직
 extension NotificationDelegate {
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 didReceive response: UNNotificationResponse,
@@ -94,7 +102,12 @@ extension NotificationDelegate {
 
         // 여기서 알람 화면 전환, 사운드 정지 등 원하는 로직 실행 가능
         print("알림 제거 완료")
-
+        
+        if let targetScreen = response.notification.request.content.userInfo["targetScreen"] as? String {
+                    UserDefaults.standard.set(targetScreen, forKey: "targetScreen")
+                    UserDefaults.standard.set(true, forKey: "shouldNavigate")
+                }
+        
         completionHandler()
     }
 }

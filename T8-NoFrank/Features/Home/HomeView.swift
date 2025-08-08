@@ -23,6 +23,9 @@ struct HomeView: View {
         .init(name: "토", isSelected: false)
     ]
     
+    @State private var shouldNavigate: Bool = false
+    @AppStorage("targetScreen") private var targetScreen: String = "TestView" // 여기서 돌 부수는 뷰로 가게 설정
+    
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {
@@ -58,6 +61,20 @@ struct HomeView: View {
         .onAppear { loadAlarm()
             NotificationService.requestAuthorization()
         }
+        .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
+                   
+                   checkNotificationNavigation()
+               }
+        .fullScreenCover(isPresented: $shouldNavigate) {  // 🔥 sheet 대신 fullScreenCover 사용
+                    // 🔥 targetScreen에 따라 다른 화면 표시
+                    switch targetScreen {
+                    case "TestView":
+                        Text("테스트 뷰 : \(targetScreen)")
+                    default:
+                        Text("알 수 없는 화면 : \(targetScreen)")
+                    }
+        }
+        
         .sheet(isPresented: $isModal) {
             NavigationStack {
                 AlarmSettingView(time: $alarmTime, days: $alarmDays)
@@ -125,6 +142,18 @@ struct HomeView: View {
         formatter.dateFormat = "HH:mm"
         return formatter.string(from: alarmTime)
     }
+    private func checkNotificationNavigation() {
+            if UserDefaults.standard.bool(forKey: "shouldNavigate") {
+                shouldNavigate = true
+                targetScreen = UserDefaults.standard.string(forKey: "targetScreen") ?? ""
+                
+                // 신호 초기화
+                UserDefaults.standard.set(false, forKey: "shouldNavigate")
+                UserDefaults.standard.removeObject(forKey: "targetScreen")
+                
+                print("노티피케이션으로 \(targetScreen) 화면으로 이동")
+            }
+        }
     
     private func persistAlarm() {
         UserDefaults.standard.set(alarmTime, forKey: "alarmTime")
@@ -140,6 +169,29 @@ struct HomeView: View {
         
         print("[Alarm][persist] time=\(alarmTime) (hour=\(hour), minute=\(minute))")
         print("[Alarm][persist] days=\(selectedNames)")
+        
+        if isEnabled {
+            let weekdays: Set<Int> = Set(alarmDays.enumerated().compactMap { index, day in
+                day.isSelected ? index + 1 : nil
+            })
+            // 기존 매주 반복 노티 취소
+            NotificationService.cancelWeeklyBurst(weekdays: weekdays, hour: hour, minute: minute, second: 0)
+            
+            // 새로운 매주 반복 노티 스케줄링
+            NotificationService.scheduleWeeklyBurst(
+                weekdays: weekdays,
+                hour: hour,
+                minute: minute,
+                second: 0,
+                intervalSec: 30,
+                count: 8
+            )
+            print("매주 반복 노티 재설정 완료")
+        } else {
+            // 알람이 비활성화되면 모든 매주 반복 노티 취소
+            let allWeekdays: Set<Int> = [1, 2, 3, 4, 5, 6, 7]
+            NotificationService.cancelWeeklyBurst(weekdays: allWeekdays, hour: hour, minute: minute, second: 0)
+        }
     }
         
     private func loadAlarm() {
@@ -161,6 +213,27 @@ struct HomeView: View {
                 alarmDays[i].isSelected = names.contains(alarmDays[i].name)
             }
             print("[Alarm][load] days=\(names)")
+        }
+        
+        // 앱 시작 시 매주 반복 노티 복원
+        if isEnabled {
+            let comps = Calendar.current.dateComponents([.hour, .minute], from: alarmTime)
+            let hour = comps.hour ?? 0
+            let minute = comps.minute ?? 0
+            
+            let weekdays: Set<Int> = Set(alarmDays.enumerated().compactMap { index, day in
+                day.isSelected ? index + 1 : nil
+            })
+            
+            NotificationService.scheduleWeeklyBurst(
+                weekdays: weekdays,
+                hour: hour,
+                minute: minute,
+                second: 0,
+                intervalSec: 30,
+                count: 8
+            )
+            print("앱 시작 시 매주 반복 노티 복원 완료")
         }
     }
 }

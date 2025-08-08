@@ -70,6 +70,22 @@ struct MovingRockView: View {
                 }
             }
         }
+        .overlay {
+            ZStack {
+                Image("DustLayer1")
+                    .resizable()
+                    .scaledToFill()
+                    .opacity(rockPhase > 0 ? 1 : 0)
+                Image("DustLayer2")
+                    .resizable()
+                    .scaledToFill()
+                    .opacity(rockPhase > 2 ? 1 : 0)
+                Image("DustLayer3")
+                    .resizable()
+                    .scaledToFill()
+                    .opacity(rockPhase > 4 ? 1 : 0)
+            }
+        }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .task {
             shakeManager.start()
