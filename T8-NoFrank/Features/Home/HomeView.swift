@@ -32,6 +32,18 @@ struct HomeView: View {
                 Color.black
                     .opacity(0.7)
                     .edgesIgnoringSafeArea(.all)
+                
+                if isEnabled {
+                    MovingRockView()
+                } else {
+                    Image("RockChain")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 455, height: 342)
+                        .padding(.top, 65)
+                    
+                }
+                
                 VStack {
                     AlarmCard(isOn: $isEnabled, timeText: DateFormatter.localizedString(from: alarmTime, dateStyle: .none, timeStyle: .short), selectedDays: alarmDays.filter { $0.isSelected }.map { $0.name }, date: alarmTime) {
                         isModal.toggle()
@@ -39,20 +51,6 @@ struct HomeView: View {
                     .padding(.top, 131)
                     .padding(.horizontal, 130)
                     
-                    if isEnabled {
-                        Image("RockDefault")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 189, height: 230)
-                            .padding(.top, 119)
-                    } else {
-                        Image("RockChain")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 455, height: 342)
-                            .padding(.top, 65)
-                        
-                    }
                     Spacer()
                 }
             }

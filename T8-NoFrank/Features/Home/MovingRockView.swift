@@ -9,7 +9,7 @@ import SwiftUI
 import UIKit
 import QuartzCore
 
-struct MotionTestView: View {
+struct MovingRockView: View {
     private let shakeManager = MotionManager.shared
     private var rockWidth: CGFloat {
         switch rockPhase {
