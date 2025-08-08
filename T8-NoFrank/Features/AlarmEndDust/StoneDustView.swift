@@ -7,21 +7,55 @@
 
 import SwiftUI
 
+
 struct StoneDustView: View {
+    @EnvironmentObject var router: AppRouter
+    @State private var triggerActivated = false
+    @State private var dustOffset: CGFloat = 0
+    @State private var newStoneOffset: CGFloat = 400
+    
     var body: some View {
-        VStack{
-            Text("돌이 깨졌어요")
-                .padding(.bottom, 100)
-            Image("stoneDust")
-                .resizable()
-                .scaledToFit()
-                .frame(width: 100)
+        VStack {
+            if !triggerActivated {
+                Text("돌이 깨졌어요")
+                    .padding(.bottom, 100)
+            }
+            
+            ZStack {
+                if !triggerActivated {
+                    Image("stoneDust")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 250)
+                        .offset(x: dustOffset)
+                }
+                
+                if triggerActivated {
+                    Image("newStone")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 250)
+                        .offset(x: newStoneOffset)
+                        .onAppear {
+                            withAnimation(.easeOut(duration: 1.0)) {
+                                newStoneOffset = 0
+                            }
+                        }
+                }
+            }
+        }
+        .onTapGesture {
+            withAnimation(.easeIn(duration: 1.0)) {
+                dustOffset = -300
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                triggerActivated = true
+                //메인화면으로 이동
+                //router.currentScreen = .lobby
+            }
         }
     }
 }
-
-
-
 
 #Preview {
     StoneDustView()
