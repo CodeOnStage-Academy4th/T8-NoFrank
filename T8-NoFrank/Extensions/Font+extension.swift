@@ -7,21 +7,22 @@
 
 import SwiftUI
 
-enum FontName: String {
-    case CustomFont = "" // 추후 폰트 파일 이름 추가
+enum Pretendard: String {
+    case black = "Pretendard-Black"
+    case bold = "Pretendard-Bold"
+    case extraBold = "Pretendard-ExtraBold"
+    case extraLight = "Pretendard-ExtraLight"
+    case light = "Pretendard-Light"
+    case medium = "Pretendard-Medium"
+    case regular = "Pretendard-Regular"
+    case semiBold = "Pretendard-SemiBold"
+    case thin = "Pretendard-Thin"
 }
 
 extension Font {
-    static let countdown: Font = .custom(FontName.CustomFont.rawValue, size: 128)
-    
-    static let largeTitle01: Font = .custom(FontName.CustomFont.rawValue, size: 44)
-    static let largeTitle02: Font = .custom(FontName.CustomFont.rawValue, size: 40)
-    
-    static let title01: Font = .custom(FontName.CustomFont.rawValue, size: 24)
-    static let title02: Font = .custom(FontName.CustomFont.rawValue, size: 20)
-    static let title03: Font = .custom(FontName.CustomFont.rawValue, size: 18)
-    
-    static let text01: Font = .custom(FontName.CustomFont.rawValue, size: 16)
-    static let text02: Font = .custom(FontName.CustomFont.rawValue, size: 14)
-
+    static let title01: Font = .custom(Pretendard.semiBold.rawValue, size: 60)
+    static let body01: Font = .custom(Pretendard.regular.rawValue, size: 30)
+    static let body01Bold: Font = .custom(Pretendard.bold.rawValue, size: 30)
+    static let callout01: Font = .custom(Pretendard.regular.rawValue, size: 20)
+    static let caption1SemiBold: Font = .custom(Pretendard.semiBold.rawValue, size: 10)
 }

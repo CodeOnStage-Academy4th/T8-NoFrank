@@ -43,6 +43,7 @@ struct RootView: View {
             switch router.currentScreen {
             case .lobby: LobbyView()
             case .sub: SubView()
+            case .stonedust: StoneDustView()
             }
         }    }
 }
