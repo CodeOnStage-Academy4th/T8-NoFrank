@@ -8,21 +8,53 @@
 import SwiftUI
 
 struct AlarmSettingView: View {
-    @State var date: Date = Date()
+    
+    struct DayItem: Identifiable {
+        let name: String
+        var isSelected: Bool
+        var id: String { name }
+    }
+    
+    @Binding var time: Date
+    @Binding var days: [DayItem]
+    @Environment(\.dismiss) var dismiss
     
     var body: some View {
-        NavigationStack{
-            VStack{
-                ZStack {
-                    Color.brown.edgesIgnoringSafeArea(.all)
-                    DatePicker(
-                        "",
-                        selection: $date,
-                        displayedComponents: [.hourAndMinute]
+        VStack{
+            ZStack(alignment: .top) {
+                Color(hex: "151515").edgesIgnoringSafeArea(.all)
+                VStack{
+                    DatePicker("",
+                               selection: $time,
+                               displayedComponents: [.hourAndMinute]
                     )
+                    .padding(.horizontal, 0)
                     .datePickerStyle(.wheel)
                     .labelsHidden()
+                    .environment(\.locale, Locale(identifier: Locale.preferredLanguages.first ?? "ko"))
+                    .colorScheme(.dark)
+                    
+                    VStack{
+                        Text("요일")
+                            .multilineTextAlignment(.leading)
+                        HStack {
+                            ForEach($days, id: \.name) { $day in
+                                DatePickButton(title: day.name, isSelected: $day.isSelected)
+                            }
+                        }
+                    }
                 }
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+        }
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button(action: {
+                    dismiss()
+                }, label: {
+                    Text("저장")
+                        .foregroundStyle(Color(hex: "#BE5F1B"))
+                })
             }
         }
     }
