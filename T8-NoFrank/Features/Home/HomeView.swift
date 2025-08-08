@@ -24,7 +24,7 @@ struct HomeView: View {
     ]
     
     @State private var shouldNavigate: Bool = false
-    @AppStorage("targetScreen") private var targetScreen: String = "TestView" // 여기서 돌 부수는 뷰로 가게 설정
+    @AppStorage("targetScreen") private var targetScreen: String = "TurnOffAlarmView" // 여기서 돌 부수는 뷰로 가게 설정
     
     @Environment(\.dismiss) private var dismiss
     
@@ -62,35 +62,36 @@ struct HomeView: View {
             NotificationService.requestAuthorization()
         }
         .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
-                   
-                   checkNotificationNavigation()
-               }
+            
+            checkNotificationNavigation()
+        }
         .fullScreenCover(isPresented: $shouldNavigate) {  // 🔥 sheet 대신 fullScreenCover 사용
-                    // 🔥 targetScreen에 따라 다른 화면 표시
-                    switch targetScreen {
-                    case "TestView":
-                        Text("테스트 뷰 : \(targetScreen)")
-                    default:
-                        Text("알 수 없는 화면 : \(targetScreen)")
-                    }
+            // 🔥 targetScreen에 따라 다른 화면 표시
+            switch targetScreen {
+            case "TurnOffAlarmView":
+                TurnOffAlarmView()
+            default:
+                Text("알 수 없는 화면 : \(targetScreen)")
+            }
         }
         
         .sheet(isPresented: $isModal) {
             NavigationStack {
-                AlarmSettingView(time: $alarmTime, days: $alarmDays)
-                    .navigationBarTitleDisplayMode(.inline)
-                    .toolbar {
-                        ToolbarItem(placement: .principal) {
-                            Text("알람 편집")
-                                .font(.system(size: 20, weight: .bold))
-                                .foregroundStyle(Color.white)
-                                .padding(.vertical, 30)
-                        }
+                AlarmSettingView(
+                    isAlarmEnabled: isEnabled, time: $alarmTime,
+                    days: $alarmDays  // 🔥 추가
+                )
+                .navigationTitle("알람 편집")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbarBackground(Color(hex: "151515"), for: .navigationBar)
+                .toolbarBackground(.visible, for: .navigationBar)
+                .toolbarColorScheme(.dark, for: .navigationBar)
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        Text("취소")
+                            .foregroundStyle(Color(hex: "#BE5F1B"))
                     }
-                    .toolbarBackground(Color(hex: "151515"), for: .navigationBar)
-                    .toolbarBackground(.visible, for: .navigationBar)
-                    .toolbarColorScheme(.dark, for: .navigationBar)
-                    .toolbarBackground(.hidden, for: .navigationBar)
+                }
             }
             .presentationDetents([.fraction(0.6)])
             .presentationDragIndicator(.visible)
@@ -119,7 +120,7 @@ struct HomeView: View {
             })
             
             if newValue == false{
-                NotificationService.cancelWeeklyBurst(weekdays: weekdays, hour: hour, minute: minute, second: 0)
+                AlarmCancelService.cancelWeeklyBurstAll(weekdays: weekdays, hour: hour, minute: minute, second: 0, totalCount: 8)
                 print("모든 노티 삭제")
             }else{
                 NotificationService.cancelWeeklyBurst(weekdays: weekdays, hour: hour, minute: minute, second: 0)
@@ -143,17 +144,17 @@ struct HomeView: View {
         return formatter.string(from: alarmTime)
     }
     private func checkNotificationNavigation() {
-            if UserDefaults.standard.bool(forKey: "shouldNavigate") {
-                shouldNavigate = true
-                targetScreen = UserDefaults.standard.string(forKey: "targetScreen") ?? ""
-                
-                // 신호 초기화
-                UserDefaults.standard.set(false, forKey: "shouldNavigate")
-                UserDefaults.standard.removeObject(forKey: "targetScreen")
-                
-                print("노티피케이션으로 \(targetScreen) 화면으로 이동")
-            }
+        if UserDefaults.standard.bool(forKey: "shouldNavigate") {
+            shouldNavigate = true
+            targetScreen = UserDefaults.standard.string(forKey: "targetScreen") ?? ""
+            
+            // 신호 초기화
+            UserDefaults.standard.set(false, forKey: "shouldNavigate")
+            UserDefaults.standard.removeObject(forKey: "targetScreen")
+            
+            print("노티피케이션으로 \(targetScreen) 화면으로 이동")
         }
+    }
     
     private func persistAlarm() {
         UserDefaults.standard.set(alarmTime, forKey: "alarmTime")
@@ -193,7 +194,7 @@ struct HomeView: View {
             NotificationService.cancelWeeklyBurst(weekdays: allWeekdays, hour: hour, minute: minute, second: 0)
         }
     }
-        
+    
     private func loadAlarm() {
         if let hour = UserDefaults.standard.object(forKey: "alarmHour") as? Int,
            let minute = UserDefaults.standard.object(forKey: "alarmMinute") as? Int {
@@ -271,10 +272,10 @@ struct AlarmCard: View {
                                 .fontWeight(selectedDays.contains(label) ? .semibold : .regular)
                                 .foregroundStyle(
                                     !selectedDays.contains(label)
-                                        ? Color(hex: "#969698")
-                                        : (isOn
-                                            ? Color(hex: "#BE5F1B")
-                                            : Color(hex: "#282828"))
+                                    ? Color(hex: "#969698")
+                                    : (isOn
+                                       ? Color(hex: "#BE5F1B")
+                                       : Color(hex: "#282828"))
                                 )
                         }
                     }

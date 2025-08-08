@@ -14,7 +14,7 @@ struct AlarmSettingView: View {
         var isSelected: Bool
         var id: String { name }
     }
-    
+    let isAlarmEnabled: Bool
     @Binding var time: Date
     @Binding var days: [DayItem]
     @Environment(\.dismiss) var dismiss
@@ -58,6 +58,7 @@ struct AlarmSettingView: View {
             }
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button(action: {
+                    saveAlarmSettings()
                     dismiss()
                 }, label: {
                     Text("저장")
@@ -66,6 +67,37 @@ struct AlarmSettingView: View {
             }
         }
     }
+    
+    // 🔥 알람 설정 저장 및 노티피케이션 스케줄링
+       private func saveAlarmSettings() {
+           let comps = Calendar.current.dateComponents([.hour, .minute], from: time)
+           let hour = comps.hour ?? 0
+           let minute = comps.minute ?? 0
+           
+           // 선택된 요일을 Set<Int>로 변환
+           let weekdays: Set<Int> = Set(days.enumerated().compactMap { index, day in
+               day.isSelected ? index + 1 : nil
+           })
+           
+           if isAlarmEnabled {
+               // 기존 노티피케이션 취소
+               AlarmCancelService.cancelWeeklyBurstAll(weekdays: weekdays, hour: hour, minute: minute, second: 0, totalCount: 8)
+               
+               // 새로운 노티피케이션 스케줄링
+               NotificationService.scheduleWeeklyBurst(
+                   weekdays: weekdays,
+                   hour: hour,
+                   minute: minute,
+                   second: 0,
+                   intervalSec: 30,
+                   count: 8
+               )
+               print(" AlarmSettingView에서 노티피케이션 스케줄링 완료")
+               print("🔔 요일: \(weekdays), 시간: \(hour):\(minute)")
+           } else {
+               print(" 알람이 비활성화되어 있어서 노티피케이션을 스케줄링하지 않습니다")
+           }
+       }
 }
 
 #Preview {
