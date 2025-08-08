@@ -15,6 +15,8 @@ struct StoneDustView: View {
     @State private var dustOffset: CGFloat = 0
     @State private var newStoneOffset: CGFloat = 400
     @State private var newStoneOpacity: Double = 0
+    @State private var a2Offset: CGFloat = 0
+    @State private var b2Offset: CGFloat = 0
     
     var body: some View {
         ZStack {
@@ -40,13 +42,13 @@ struct StoneDustView: View {
                         } else if blowDetection.blowStage == 1 {
                             Image("stoneDustA1")
                             Image("stoneDustA2")
-                                .offset(x: dustOffset)
-                                .opacity(1.0 - min(1.0, Double(abs(dustOffset / 300))))
+                                .offset(x: a2Offset * 2 - 20, y: a2Offset * 2 - 100)
+                                .opacity(1.0 - min(1.0, Double(abs(a2Offset / 100))))
                         } else if blowDetection.blowStage == 2 {
                             Image("stoneDustB1")
                             Image("stoneDustB2")
-                                .offset(x: dustOffset)
-                                .opacity(1.0 - min(1.0, Double(abs(dustOffset / 300))))
+                                .offset(x: -b2Offset * 2 - 60, y: b2Offset * 2 - 100)
+                                .opacity(1.0 - min(1.0, Double(abs(b2Offset / 100))))
                         } else if blowDetection.blowStage == 3 {
                             Image("stoneDustB1")
                                 .offset(x: dustOffset)
@@ -72,9 +74,13 @@ struct StoneDustView: View {
         .onChange(of: blowDetection.blowStage) { _, stage in
             switch stage {
             case 1:
-                withAnimation(.easeOut(duration: 1.5)) { dustOffset = -100 }
+                withAnimation(.easeOut(duration: 1.5)) {
+                    a2Offset = -200
+                }
             case 2:
-                withAnimation(.easeOut(duration: 1.5)) { dustOffset = -200 }
+                withAnimation(.easeOut(duration: 1.5)) {
+                    b2Offset = -300
+                }
             case 3:
                 withAnimation(.easeOut(duration: 2)) {
                     dustOffset = -400
@@ -99,6 +105,8 @@ struct StoneDustView: View {
             dustOffset = 0
             newStoneOffset = 400
             newStoneOpacity = 0
+            a2Offset = 0
+            b2Offset = 0
             blowDetection.start()
         }
     }
