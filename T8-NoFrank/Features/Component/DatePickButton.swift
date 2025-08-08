@@ -26,9 +26,5 @@ struct DatePickButton: View {
 }
 
 #Preview {
-    AlarmSettingView()
-}
-
-#Preview {
     HomeView()
 }

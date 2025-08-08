@@ -10,43 +10,52 @@ import SwiftUI
 struct AlarmSettingView: View {
     
     struct DayItem: Identifiable {
-        let id = UUID()
         let name: String
         var isSelected: Bool
+        var id: String { name }
     }
     
-    @State var time: Date = Date()
-    @State private var days: [DayItem] = [
-        DayItem(name: "일", isSelected: false),
-        DayItem(name: "월", isSelected: false),
-        DayItem(name: "화", isSelected: false),
-        DayItem(name: "수", isSelected: false),
-        DayItem(name: "목", isSelected: false),
-        DayItem(name: "금", isSelected: false),
-        DayItem(name: "토", isSelected: false)
-    ]
+    @Binding var time: Date
+    @Binding var days: [DayItem]
+    @Environment(\.dismiss) var dismiss
     
     var body: some View {
         VStack{
             ZStack(alignment: .top) {
-                Color.black.edgesIgnoringSafeArea(.all)
+                Color(hex: "151515").edgesIgnoringSafeArea(.all)
                 VStack{
                     DatePicker("",
                                selection: $time,
                                displayedComponents: [.hourAndMinute]
                     )
+                    .padding(.horizontal, 0)
                     .datePickerStyle(.wheel)
                     .labelsHidden()
                     .environment(\.locale, Locale(identifier: Locale.preferredLanguages.first ?? "ko"))
-                    .colorScheme(.dark) // 이 뷰 안에서만 다크 톤 강제
-                    HStack {
-                        ForEach($days) { $day in
-                            DatePickButton(title: day.name, isSelected: $day.isSelected)
+                    .colorScheme(.dark)
+                    
+                    VStack{
+                        Text("요일")
+                            .multilineTextAlignment(.leading)
+                        HStack {
+                            ForEach($days, id: \.name) { $day in
+                                DatePickButton(title: day.name, isSelected: $day.isSelected)
+                            }
                         }
                     }
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+        }
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button(action: {
+                    dismiss()
+                }, label: {
+                    Text("저장")
+                        .foregroundStyle(Color(hex: "#BE5F1B"))
+                })
+            }
         }
     }
 }
