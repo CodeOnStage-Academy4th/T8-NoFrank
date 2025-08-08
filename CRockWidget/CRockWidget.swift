@@ -9,7 +9,7 @@ import WidgetKit
 import SwiftUI
 
 enum AppConstants {
-    static let appGroupID = "group.com.example.crock" // MUST match the app target
+    static let appGroupID = "group.CRockWidget" // MUST match the app target
 }
 
 private enum WidgetStore {
@@ -83,7 +83,9 @@ struct CRockWidgetEntryView : View {
         switch family {
         case .accessoryCircular:
             ZStack {
-                Circle().fill(Color.blue)
+                Circle()
+                    .fill(Color.blue)
+                    .opacity(0.3)
                 VStack {
                     if entry.isEnabled {
                         VStack(spacing: 0) {

@@ -9,7 +9,7 @@ import SwiftUI
 import WidgetKit
 
 enum AppConstants {
-    static let appGroupID = "group.com.example.crock" // TODO: replace with your real App Group ID
+    static let appGroupID = "group.CRockWidget" // TODO: replace with your real App Group ID
 }
 
 struct HomeView: View {
