@@ -9,7 +9,9 @@ import SwiftUI
 import UIKit
 import QuartzCore
 
-struct MotionTestView: View {
+struct MovingRockView: View {
+    @State var isBreakable: Bool
+    
     private let shakeManager = MotionManager.shared
     private var rockWidth: CGFloat {
         switch rockPhase {
@@ -89,7 +91,8 @@ struct MotionTestView: View {
     
     private func handleShakeDegree(_ deg: Int) async {
         guard containerSize != .zero else { return }
-        isRockPain = true
+        
+        if isBreakable { isRockPain = true }
         isRockPainTask = Task { @MainActor in
             try? await Task.sleep(for: .seconds(1))
             isRockPainTask?.cancel()
@@ -122,11 +125,13 @@ struct MotionTestView: View {
         
         try? await Task.sleep(for: .seconds(0.1))
         
-        if rockPhase != 5 {
-            rockPhaseCount += 1
-            if rockPhaseCount > 10 {
-                rockPhase += 1
-                rockPhaseCount = 0
+        if isBreakable {
+            if rockPhase != 5 {
+                rockPhaseCount += 1
+                if rockPhaseCount > 10 {
+                    rockPhase += 1
+                    rockPhaseCount = 0
+                }
             }
         }
         
