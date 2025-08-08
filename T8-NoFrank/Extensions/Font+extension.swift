@@ -20,9 +20,18 @@ enum Pretendard: String {
 }
 
 extension Font {
-    static let title01: Font = .custom(Pretendard.semiBold.rawValue, size: 60)
+    static let title01: Font = .custom(Pretendard.semiBold.rawValue, size: 40)
+    static let subtitleMedium: Font = .custom(Pretendard.medium.rawValue, size: 19)
+    
     static let body01: Font = .custom(Pretendard.regular.rawValue, size: 30)
     static let body01Bold: Font = .custom(Pretendard.bold.rawValue, size: 30)
+    
     static let callout01: Font = .custom(Pretendard.regular.rawValue, size: 20)
-    static let caption1SemiBold: Font = .custom(Pretendard.semiBold.rawValue, size: 10)
+    
+    static let subheadlineMedium: Font = .custom(Pretendard.medium.rawValue, size: 17)
+    static let caption1Medium: Font = .custom(Pretendard.medium.rawValue, size: 15)
+    
+    static let caption1SemiBold: Font = .custom(Pretendard.semiBold.rawValue, size: 15)
+    
+    static let alarmTime: Font = .custom(Pretendard.bold.rawValue, size: 90)
 }
