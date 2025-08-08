@@ -24,7 +24,7 @@ struct HomeView: View {
     ]
     
     @State private var shouldNavigate: Bool = false
-    @AppStorage("targetScreen") private var targetScreen: String = "TestView" // 여기서 돌 부수는 뷰로 가게 설정
+    @AppStorage("targetScreen") private var targetScreen: String = "TurnOffAlarmView" // 여기서 돌 부수는 뷰로 가게 설정
     
     @Environment(\.dismiss) private var dismiss
     
@@ -68,8 +68,8 @@ struct HomeView: View {
         .fullScreenCover(isPresented: $shouldNavigate) {  // 🔥 sheet 대신 fullScreenCover 사용
                     // 🔥 targetScreen에 따라 다른 화면 표시
                     switch targetScreen {
-                    case "TestView":
-                        Text("테스트 뷰 : \(targetScreen)")
+                    case "TurnOffAlarmView":
+                        TurnOffAlarmView()
                     default:
                         Text("알 수 없는 화면 : \(targetScreen)")
                     }
