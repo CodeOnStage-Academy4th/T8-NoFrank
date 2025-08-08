@@ -25,7 +25,7 @@ struct MotionTestView: View {
             GeometryReader { proxy in
                 ZStack {
                     Color.clear
-                    Image(.rockDefault)
+                    Image(.rock0)
                         .resizable()
                         .scaledToFit()
                         .frame(width: rockWidth, height: rockHeight)
