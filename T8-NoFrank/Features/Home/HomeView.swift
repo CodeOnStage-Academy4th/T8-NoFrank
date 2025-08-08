@@ -15,47 +15,60 @@ struct HomeView: View {
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {
-        VStack {
-            ZStack(alignment: .center) {
-                Button {
-                    isModal.toggle()
-                } label: {
-                    Text(Time)
-                        .frame(width: 200, height: 60)
-                }
-                .background(.white)
-                .border(.pink, width: 4)
-                .cornerRadius(8)
-            }
-            .padding(.top, 50)
-            
-            if isEnabled {
-                Button(action: {
+        NavigationStack{
+            VStack {
+                Button("임시 토글") {
                     isEnabled.toggle()
-                    isAnimating.toggle()
-                }) {
+                }
+                .padding(.top, 20)
+                
+                ZStack(alignment: .center) {
+                    Button {
+                        isModal.toggle()
+                    } label: {
+                        VStack(spacing: 0){
+                            Text("월 화 수 목 금 토 일")
+                                .font(.system(size: 20, weight: .bold))
+                                .foregroundStyle(.white)
+                                .frame(width: 150, height: 30)
+                                .padding()
+                            Text("\(Time)")
+                                .font(.system(size: 60, weight: .bold))
+                                .foregroundStyle(.white)
+                                .frame(width: 250, height: 60)
+                                .padding(.vertical, 10)
+                        }
+                    }
+                    .background(.brown)
+                    .cornerRadius(10)
+                }
+                .padding(.top, 30)
+                
+                Spacer()
+                
+                if isEnabled {
                     Image("Rock_Default")
                         .resizable()
                         .scaledToFit()
-                        .frame(width: 100, height: 100)
-                        .animation(.easeInOut(duration: 3), value: isAnimating)
-                }
-            } else {
-                Button {
-                    isEnabled.toggle()
-                    isAnimating.toggle()
-                } label: {
-                    ZStack {
-                        Circle()
-                            .fill(Color.gray)
-                            .frame(width: 100, height: 100)
-                            .animation(.easeInOut(duration: 4), value: isAnimating)
-                    }
+                        .frame(width: 270, height: 270)
+                        .padding(.bottom, 200)
+                } else {
+                    Circle()
+                        .fill(Color.gray)
+                        .frame(width: 270, height: 270)
+                        .padding(.bottom, 200)
                 }
             }
         }
         .sheet(isPresented: $isModal) {
             AlarmSettingView()
+                .navigationTitle("알람 편집")
+                        .navigationBarTitleDisplayMode(.inline)
+                        .toolbar {
+                            ToolbarItem(placement: .navigationBarLeading) {
+                                Text("back")
+                            }
+                        }
         }
     }
 }

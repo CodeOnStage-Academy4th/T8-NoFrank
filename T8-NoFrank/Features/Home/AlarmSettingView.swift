@@ -8,11 +8,26 @@
 import SwiftUI
 
 struct AlarmSettingView: View {
+    @State var date: Date = Date()
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        NavigationStack{
+            VStack{
+                ZStack {
+                    Color.brown.edgesIgnoringSafeArea(.all)
+                    DatePicker(
+                        "",
+                        selection: $date,
+                        displayedComponents: [.hourAndMinute]
+                    )
+                    .datePickerStyle(.wheel)
+                    .labelsHidden()
+                }
+            }
+        }
     }
 }
 
 #Preview {
-    AlarmSettingView()
+    HomeView()
 }
