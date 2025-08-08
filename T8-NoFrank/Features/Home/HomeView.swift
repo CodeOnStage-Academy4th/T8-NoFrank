@@ -123,7 +123,7 @@ struct HomeView: View {
                 AlarmCancelService.cancelWeeklyBurstAll(weekdays: weekdays, hour: hour, minute: minute, second: 0, totalCount: 8)
                 print("모든 노티 삭제")
             }else{
-                NotificationService.cancelWeeklyBurst(weekdays: weekdays, hour: hour, minute: minute, second: 0)
+                NotificationService.cancelWeeklyBurst(weekdays: weekdays, hour: hour, minute: minute, second: 0, intervalSec: 30)
                 NotificationService.scheduleWeeklyBurst(
                     weekdays: weekdays,
                     hour: hour,
@@ -176,7 +176,7 @@ struct HomeView: View {
                 day.isSelected ? index + 1 : nil
             })
             // 기존 매주 반복 노티 취소
-            NotificationService.cancelWeeklyBurst(weekdays: weekdays, hour: hour, minute: minute, second: 0)
+            NotificationService.cancelWeeklyBurst(weekdays: weekdays, hour: hour, minute: minute, second: 0, intervalSec: 30)
             
             // 새로운 매주 반복 노티 스케줄링
             NotificationService.scheduleWeeklyBurst(
@@ -191,7 +191,7 @@ struct HomeView: View {
         } else {
             // 알람이 비활성화되면 모든 매주 반복 노티 취소
             let allWeekdays: Set<Int> = [1, 2, 3, 4, 5, 6, 7]
-            NotificationService.cancelWeeklyBurst(weekdays: allWeekdays, hour: hour, minute: minute, second: 0)
+            NotificationService.cancelWeeklyBurst(weekdays: allWeekdays, hour: hour, minute: minute, second: 0, intervalSec: 30)
         }
     }
     
