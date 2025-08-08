@@ -1,8 +1,8 @@
 import CoreMotion
 import Foundation
 
-final class ShakeManager {
-    static let shared = ShakeManager()
+final class MotionManager {
+    static let shared = MotionManager()
     let degreesStream: AsyncStream<Int>
 
     private let motionManager = CMMotionManager()

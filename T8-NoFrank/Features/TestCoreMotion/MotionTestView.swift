@@ -9,7 +9,7 @@ import SwiftUI
 import UIKit
 
 struct MotionTestView: View {
-    private let shakeManager = ShakeManager.shared
+    private let shakeManager = MotionManager.shared
     private let rockSize: CGFloat = 100
     @State private var containerSize: CGSize = .zero
     @State private var rockOffset: CGSize = .zero
