@@ -18,10 +18,15 @@ struct StoneDustView: View {
     
     var body: some View {
         ZStack {
+            Image("Home_Background")
+            Color.black
+                .opacity(0.7)
+                .edgesIgnoringSafeArea(.all)
             VStack {
                     if !triggerActivated {
                         Text("돌이 깨졌어요")
                             .font(.body01Bold)
+                            .foregroundStyle(.white)
                             .padding(.top, 139)
                     }
                     Spacer()
@@ -51,14 +56,17 @@ struct StoneDustView: View {
                     Spacer()
                 }
                 .padding(.top, 426)
-                
-                Image("newStone")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 250)
-                    .rotationEffect(.degrees(newStoneOffset == 0 ? 0 : 720))
-                    .offset(x: newStoneOffset)
-                    .opacity(newStoneOpacity)
+                VStack {
+                    Image("RockDefault")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 189, height: 230)
+                        .rotationEffect(.degrees(newStoneOffset == 0 ? 0 : 720))
+                        .offset(x: newStoneOffset)
+                        .opacity(newStoneOpacity)
+                    Spacer()
+                }
+                .padding(.top, 359)
             }
         }
         .onChange(of: blowDetection.blowStage) { _, stage in
@@ -75,6 +83,10 @@ struct StoneDustView: View {
                     triggerActivated = true
                 }
                 blowDetection.stop()
+                //1초 후 홈 뷰로 이동(?)
+//                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+//                    router.currentScreen = .homeview
+//                }
             default:
                 break
             }
@@ -82,7 +94,6 @@ struct StoneDustView: View {
         .onDisappear {
             blowDetection.stop()
         }
-
         .onAppear {
             triggerActivated = false
             dustOffset = 0
