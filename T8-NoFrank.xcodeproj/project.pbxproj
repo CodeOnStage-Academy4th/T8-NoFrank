@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXFileReference section */
-		8B7A7AA72E44DFBB00FDA06F /* T8-NoFrank.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = "T8-NoFrank.app"; path = "/Users/judy/Desktop/Swift-Ch/T8-NoFrank/build/Debug-iphoneos/T8-NoFrank.app"; sourceTree = "<absolute>"; };
+		3EAC2C812E462C19008FBEC2 /* T8-NoFrank.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "T8-NoFrank.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -33,6 +33,7 @@
 			isa = PBXGroup;
 			children = (
 				8B7A7A122E44DE5800FDA06F /* T8-NoFrank */,
+				3EAC2C812E462C19008FBEC2 /* T8-NoFrank.app */,
 			);
 			sourceTree = "<group>";
 		};
@@ -58,7 +59,7 @@
 			packageProductDependencies = (
 			);
 			productName = "T8-NoFrank";
-			productReference = 8B7A7AA72E44DFBB00FDA06F /* T8-NoFrank.app */;
+			productReference = 3EAC2C812E462C19008FBEC2 /* T8-NoFrank.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -244,9 +245,10 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 47UM88R722;
+				DEVELOPMENT_TEAM = M48446ADTD;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "바람 감지를 위해 마이크 접근이 필요합니다.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -272,9 +274,10 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 47UM88R722;
+				DEVELOPMENT_TEAM = M48446ADTD;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "바람 감지를 위해 마이크 접근이 필요합니다.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

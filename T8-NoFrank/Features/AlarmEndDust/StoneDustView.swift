@@ -10,6 +10,7 @@ import SwiftUI
 
 struct StoneDustView: View {
     @EnvironmentObject var router: AppRouter
+    @State private var blowDetection = BlowDetection()
     @State private var triggerActivated = false
     @State private var dustOffset: CGFloat = 0
     @State private var newStoneOffset: CGFloat = 400
@@ -44,15 +45,21 @@ struct StoneDustView: View {
                 }
             }
         }
-        .onTapGesture {
-            withAnimation(.easeIn(duration: 1.0)) {
-                dustOffset = -300
+        .onChange(of: blowDetection.didBlow) { _, didBlow in
+            if didBlow && !triggerActivated {
+                withAnimation(.easeIn(duration: 1.0)) {
+                    dustOffset = -300
+                }
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    triggerActivated = true
+//                    DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+//                        router.currentScreen = .lobby
+//                    }
+                }
             }
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                triggerActivated = true
-                //메인화면으로 이동
-                //router.currentScreen = .lobby
-            }
+        }
+        .onAppear {
+            blowDetection.start()
         }
     }
 }
