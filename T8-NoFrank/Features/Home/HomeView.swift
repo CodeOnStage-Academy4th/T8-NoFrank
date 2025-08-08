@@ -28,9 +28,6 @@ struct HomeView: View {
         .init(name: "토", isSelected: false)
     ]
     
-    @State private var shouldNavigate: Bool = false
-    @AppStorage("targetScreen") private var targetScreen: String = "TurnOffAlarmView" // 여기서 돌 부수는 뷰로 가게 설정
-    
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {
@@ -90,20 +87,6 @@ struct HomeView: View {
         .onAppear { loadAlarm()
             NotificationService.requestAuthorization()
         }
-        .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
-            
-            checkNotificationNavigation()
-        }
-        .fullScreenCover(isPresented: $shouldNavigate) {  // 🔥 sheet 대신 fullScreenCover 사용
-            // 🔥 targetScreen에 따라 다른 화면 표시
-            switch targetScreen {
-            case "TurnOffAlarmView":
-                TurnOffAlarmView()
-            default:
-                Text("알 수 없는 화면 : \(targetScreen)")
-            }
-        }
-        
         .sheet(isPresented: $isModal) {
             NavigationStack {
                 AlarmSettingView(

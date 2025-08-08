@@ -9,10 +9,14 @@ import SwiftUI
 
 struct TurnOffAlarmView: View {
     var body: some View {
-        Text("TurnOffAlarmView")
+        VStack {
+            ZStack {
+                Image("Home_Background")
+                Color.black
+                    .opacity(0.7)
+                    .edgesIgnoringSafeArea(.all)
+                MovingRockView(isBreakable: true)
+            }
+        }
     }
-}
-
-#Preview {
-    TurnOffAlarmView()
 }

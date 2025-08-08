@@ -9,7 +9,6 @@ import SwiftUI
 
 
 struct StoneDustView: View {
-    @EnvironmentObject var router: AppRouter
     @State private var blowDetection = BlowDetection()
     @State private var triggerActivated = false
     @State private var dustOffset: CGFloat = 0
@@ -82,17 +81,18 @@ struct StoneDustView: View {
                     b2Offset = -300
                 }
             case 3:
-                withAnimation(.easeOut(duration: 2)) {
-                    dustOffset = -400
-                    newStoneOffset = 0
-                    newStoneOpacity = 1
-                    triggerActivated = true
+                Task {
+                    withAnimation(.easeOut(duration: 2)) {
+                        dustOffset = -400
+                        newStoneOffset = 0
+                        newStoneOpacity = 1
+                        triggerActivated = true
+                    }
+                    blowDetection.stop()
+                    
+                    try? await Task.sleep(for: .seconds(2))
+                    AppRouter.shared.navigate(.home)
                 }
-                blowDetection.stop()
-                //1초 후 홈 뷰로 이동(?)
-//                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-//                    router.currentScreen = .homeview
-//                }
             default:
                 break
             }
