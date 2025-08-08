@@ -13,44 +13,56 @@ import AVFoundation
 final class BlowDetection {
     private var recorder: AVAudioRecorder?
     private var timer: Timer?
+    private var blowStartTime: Date?
 
     var didBlow: Bool = false
 
     func start() {
-//        print("호출")
+        stop()
+        
+        do {
+            try AVAudioSession.sharedInstance().setCategory(.playAndRecord, mode: .default, options: [])
+            try AVAudioSession.sharedInstance().setActive(true)
+        } catch {
+            print("설정 실패: \(error)")
+        }
+
         let url = URL(fileURLWithPath: "/dev/null")
         let settings: [String: Any] = [
             AVFormatIDKey: Int(kAudioFormatAppleLossless),
             AVSampleRateKey: 44100.0,
-            AVNumberOfChannelsKey: 1,
-            AVEncoderAudioQualityKey: AVAudioQuality.max.rawValue
+            AVNumberOfChannelsKey: 1
         ]
 
         do {
             recorder = try AVAudioRecorder(url: url, settings: settings)
-            recorder?.isMeteringEnabled = true
-            recorder?.record()
-            let started = recorder?.record() ?? false
-            print("🎙️ record() 시작됨?: \(started)")
-
-            timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { _ in
-                self.recorder?.updateMeters()
-                let db = self.recorder?.peakPower(forChannel: 0) ?? -160
-                print("실시간 데시벨 :\(db)")
-                if db > -100 {
-                    Task { @MainActor in
-                        print("blow (db: \(db))")
-                        self.didBlow = true
+            if let recorder = recorder {
+                recorder.isMeteringEnabled = true
+                _ = recorder.record()
+                timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
+                    guard let self, let recorder = self.recorder else { return }
+                    recorder.updateMeters()
+                    let db = recorder.peakPower(forChannel: 0)
+//                    print("실시간 데시벨: \(db)")
+                    if db > -10 {
+                        if self.blowStartTime == nil {
+                            self.blowStartTime = Date()
+                        } else if Date().timeIntervalSince(self.blowStartTime!) > 3 {
+                            self.didBlow = true
+                        }
+                    } else {
+                        self.blowStartTime = nil
                     }
                 }
             }
         } catch {
-            print("녹음기 오류: \(error.localizedDescription)")
+            print("오류: \(error.localizedDescription)")
         }
     }
 
     func stop() {
         timer?.invalidate()
         recorder?.stop()
+        try? AVAudioSession.sharedInstance().setActive(false)
     }
 }
