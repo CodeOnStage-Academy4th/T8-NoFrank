@@ -1,10 +1,13 @@
 import CoreMotion
 import Foundation
+import CoreGraphics
 
 final class MotionManager {
     let shakeDegreesStream: AsyncStream<Int>
+    let tiltUnitStream: AsyncStream<CGVector>
 
     private var shakeDegreesContinuation: AsyncStream<Int>.Continuation?
+    private var tiltUnitContinuation: AsyncStream<CGVector>.Continuation?
 
     private let updateInterval: TimeInterval
     private let shakeCooldown: TimeInterval
@@ -35,6 +38,14 @@ final class MotionManager {
         }
         self.shakeDegreesContinuation = cont
 
+        var contTilt: AsyncStream<CGVector>.Continuation!
+        self.tiltUnitStream = AsyncStream<CGVector>(
+            bufferingPolicy: .bufferingNewest(1)
+        ) { c in
+            contTilt = c
+        }
+        self.tiltUnitContinuation = contTilt
+
         self.updateInterval = updateInterval
         self.shakeCooldown = shakeCooldown
         self._lastShakeAt = .distantPast
@@ -55,6 +66,7 @@ final class MotionManager {
         { [weak self] data, error in
             if let data {
                 self?.handleShakeDetection(from: data.userAcceleration)
+                self?.handleTilt(gravity: data.gravity)
             }
         }
     }
@@ -86,8 +98,15 @@ final class MotionManager {
         }
     }
 
+    private func handleTilt(gravity g: CMAcceleration) {
+        let ux = max(-1.0, min(1.0, g.x))
+        let uy = max(-1.0, min(1.0, -g.y))
+        tiltUnitContinuation?.yield(CGVector(dx: ux, dy: uy))
+    }
+
     deinit {
         shakeDegreesContinuation?.finish()
+        tiltUnitContinuation?.finish()
         stopAll()
     }
 }
