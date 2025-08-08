@@ -28,13 +28,14 @@ struct StoneDustView: View {
                 }
             
             ZStack {
-                Image("stoneDust")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 250)
-                    .offset(x: dustOffset)
-                    .opacity(1.0 - min(1.0, Double(abs(dustOffset / 300))))
-
+                VStack {
+                    Image("stoneDust")
+                        .offset(x: dustOffset)
+                        .opacity(1.0 - min(1.0, Double(abs(dustOffset / 300))))
+                    Spacer()
+                }
+                .padding(.top, 426)
+                
                 Image("newStone")
                     .resizable()
                     .scaledToFit()

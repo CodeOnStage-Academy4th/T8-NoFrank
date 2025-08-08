@@ -13,7 +13,7 @@ import AVFoundation
 final class BlowDetection {
     private var recorder: AVAudioRecorder?
     private var timer: Timer?
-    private var blowStartTime: Date?
+    private var accumulatedBlowTime: Double = 0.0
 
     var didBlow: Bool = false
 
@@ -45,13 +45,12 @@ final class BlowDetection {
                     let db = recorder.peakPower(forChannel: 0)
 //                    print("실시간 데시벨: \(db)")
                     if db > -10 {
-                        if self.blowStartTime == nil {
-                            self.blowStartTime = Date()
-                        } else if Date().timeIntervalSince(self.blowStartTime!) > 3 {
+                        self.accumulatedBlowTime += 0.1
+                        if self.accumulatedBlowTime >= 3.0 {
                             self.didBlow = true
                         }
                     } else {
-                        self.blowStartTime = nil
+//                        self.accumulatedBlowTime = max(0.0, self.accumulatedBlowTime - 0.1)
                     }
                 }
             }
