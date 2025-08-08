@@ -36,8 +36,26 @@ struct HomeView: View {
                     .opacity(0.7)
                     .edgesIgnoringSafeArea(.all)
                 
+                ZStack {
+                    RoundedRectangle(cornerRadius: 12)
+                        .strokeBorder(Color.white.opacity(0))
+                        .background(Color.clear)
+                }
+                .frame(width: 300, height: 742)
+                .coordinateSpace(name: "RockArena")
+                .overlay(
+                    Group {
+                        if isEnabled {
+                            MovingRockView(isBreakable: false)
+                        }
+                    }
+                )
+                
                 if isEnabled {
-                    MovingRockView(isBreakable: false)
+                    Image("RotationGrass")
+                        .resizable()
+                        .scaledToFit()
+                    
                 } else {
                     Image("RockChain")
                         .resizable()
@@ -48,7 +66,7 @@ struct HomeView: View {
                 }
                 
                 VStack {
-                    AlarmCard(isOn: $isEnabled, timeText: DateFormatter.localizedString(from: alarmTime, dateStyle: .none, timeStyle: .short), selectedDays: alarmDays.filter { $0.isSelected }.map { $0.name }, date: alarmTime) {
+                    AlarmCard(isOn: $isEnabled, timeText: timeTextFormatted, selectedDays: alarmDays.filter { $0.isSelected }.map { $0.name }, date: alarmTime) {
                         isModal.toggle()
                     }
                     .padding(.top, 131)
@@ -62,17 +80,17 @@ struct HomeView: View {
             NotificationService.requestAuthorization()
         }
         .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
-                   
-                   checkNotificationNavigation()
-               }
+            
+            checkNotificationNavigation()
+        }
         .fullScreenCover(isPresented: $shouldNavigate) {  // 🔥 sheet 대신 fullScreenCover 사용
-                    // 🔥 targetScreen에 따라 다른 화면 표시
-                    switch targetScreen {
-                    case "TurnOffAlarmView":
-                        TurnOffAlarmView()
-                    default:
-                        Text("알 수 없는 화면 : \(targetScreen)")
-                    }
+            // 🔥 targetScreen에 따라 다른 화면 표시
+            switch targetScreen {
+            case "TurnOffAlarmView":
+                TurnOffAlarmView()
+            default:
+                Text("알 수 없는 화면 : \(targetScreen)")
+            }
         }
         
         .sheet(isPresented: $isModal) {
@@ -80,20 +98,14 @@ struct HomeView: View {
                 AlarmSettingView(
                     isAlarmEnabled: isEnabled, time: $alarmTime,
                     days: $alarmDays  // 🔥 추가
-                                )
-                                .navigationTitle("알람 편집")
-                                .navigationBarTitleDisplayMode(.inline)
-                                .toolbarBackground(Color(hex: "151515"), for: .navigationBar)
-                                .toolbarBackground(.visible, for: .navigationBar)
-                                .toolbarColorScheme(.dark, for: .navigationBar)
-                                .toolbar {
-                                    ToolbarItem(placement: .navigationBarLeading) {
-                                        Text("취소")
-                                            .foregroundStyle(Color(hex: "#BE5F1B"))
-                                    }
-                                }
+                )
+                .navigationTitle("알람 편집")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbarBackground(Color(hex: "151515"), for: .navigationBar)
+                .toolbarBackground(.visible, for: .navigationBar)
+                .toolbarColorScheme(.dark, for: .navigationBar)
             }
-            .presentationDetents([.fraction(0.6), .medium, .large])
+            .presentationDetents([.fraction(0.6)])
             .presentationDragIndicator(.visible)
         }
         .onChange(of: isModal) { newValue in
@@ -137,18 +149,24 @@ struct HomeView: View {
         }
     }
     
+    private var timeTextFormatted: String {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "ko_KR")
+        formatter.dateFormat = "HH:mm"
+        return formatter.string(from: alarmTime)
+    }
     private func checkNotificationNavigation() {
-            if UserDefaults.standard.bool(forKey: "shouldNavigate") {
-                shouldNavigate = true
-                targetScreen = UserDefaults.standard.string(forKey: "targetScreen") ?? ""
-                
-                // 신호 초기화
-                UserDefaults.standard.set(false, forKey: "shouldNavigate")
-                UserDefaults.standard.removeObject(forKey: "targetScreen")
-                
-                print("노티피케이션으로 \(targetScreen) 화면으로 이동")
-            }
+        if UserDefaults.standard.bool(forKey: "shouldNavigate") {
+            shouldNavigate = true
+            targetScreen = UserDefaults.standard.string(forKey: "targetScreen") ?? ""
+            
+            // 신호 초기화
+            UserDefaults.standard.set(false, forKey: "shouldNavigate")
+            UserDefaults.standard.removeObject(forKey: "targetScreen")
+            
+            print("노티피케이션으로 \(targetScreen) 화면으로 이동")
         }
+    }
     
     private func persistAlarm() {
         UserDefaults.standard.set(alarmTime, forKey: "alarmTime")
@@ -188,7 +206,7 @@ struct HomeView: View {
             NotificationService.cancelAllNotifications()
         }
     }
-        
+    
     private func loadAlarm() {
         if let hour = UserDefaults.standard.object(forKey: "alarmHour") as? Int,
            let minute = UserDefaults.standard.object(forKey: "alarmMinute") as? Int {
@@ -199,7 +217,6 @@ struct HomeView: View {
                 alarmTime = rebuilt
             }
         } else if let savedTime = UserDefaults.standard.object(forKey: "alarmTime") as? Date {
-            // Fallback for older saved value
             alarmTime = savedTime
         }
         print("[Alarm][load] time=\(alarmTime)")
@@ -263,21 +280,27 @@ struct AlarmCard: View {
                         ForEach(days.indices, id: \.self) { idx in
                             let label = days[idx]
                             Text(label)
-                                .font(.headline)
+                                .font(.custom(Pretendard.regular.rawValue, size: 17))
                                 .fontWeight(selectedDays.contains(label) ? .semibold : .regular)
-                                .foregroundStyle(selectedDays.contains(label) ? Color(hex: "#BE5F1B") : Color.white.opacity(0.7))
+                                .foregroundStyle(
+                                    !selectedDays.contains(label)
+                                    ? Color(hex: "#969698")
+                                    : (isOn
+                                       ? Color(hex: "#BE5F1B")
+                                       : Color(hex: "#282828"))
+                                )
                         }
                     }
                     
                     HStack(alignment: .firstTextBaseline, spacing: 8) {
                         Text(amPm)
-                            .font(.title3)
-                            .foregroundStyle(.white)
+                            .font(.custom(Pretendard.regular.rawValue, size: 20))
+                            .foregroundStyle(isOn ? .white : Color(hex: "#969698"))
                             .opacity(0.9)
                         
                         Text(timeText.isEmpty ? "07:00" : timeText)
-                            .font(.system(size: 30, weight: .heavy, design: .rounded))
-                            .foregroundStyle(.white)
+                            .font(.custom(Pretendard.bold.rawValue, size: 30))
+                            .foregroundStyle(isOn ? .white : Color(hex: "#969698"))
                     }
                 }
                 

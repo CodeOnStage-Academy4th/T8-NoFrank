@@ -16,11 +16,11 @@ struct DatePickButton: View {
             isSelected.toggle()
         }) {
             Text(title)
-                .font(.system(size: 20))
+                .font(.custom("Pretendard", size: 15))
                 .foregroundStyle(Color.white)
         }
-        .frame(width: 44, height: 44)
-        .background(isSelected ? Color(hex: "#BE5F1B") : Color(hex: "969698"))
+        .frame(width: 40, height: 40)
+        .background(isSelected ? Color(hex: "#BE5F1B") : Color(hex: "282828"))
         .clipShape(Circle())
     }
 }
