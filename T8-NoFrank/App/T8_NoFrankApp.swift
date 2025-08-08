@@ -11,6 +11,7 @@ import SwiftUI
 struct T8_NoFrankApp: App {
     @StateObject private var router = AppRouter()
     @Environment(\.scenePhase) private var scenePhase
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     
     var body: some Scene {
         WindowGroup{
