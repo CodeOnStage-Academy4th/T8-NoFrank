@@ -18,10 +18,14 @@ struct StoneDustView: View {
     
     var body: some View {
         ZStack {
-            if !triggerActivated {
-                Text("돌이 깨졌어요")
-                    .padding(.bottom, 500)
-            }
+            VStack {
+                    if !triggerActivated {
+                        Text("돌이 깨졌어요")
+                            .font(.body01Bold)
+                            .padding(.top, 139)
+                    }
+                    Spacer()
+                }
             
             ZStack {
                 Image("stoneDust")
