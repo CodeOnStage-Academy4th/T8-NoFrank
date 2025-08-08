@@ -36,7 +36,11 @@ struct AlarmSettingView: View {
                     
                     VStack{
                         Text("요일")
-                            .multilineTextAlignment(.leading)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .foregroundStyle(Color.white)
+                            .font(.custom("Pretendard", size: 19))
+                            .padding(.leading, 30)
+                            .padding(.bottom, 17)
                         HStack {
                             ForEach($days, id: \.name) { $day in
                                 DatePickButton(title: day.name, isSelected: $day.isSelected)
@@ -48,6 +52,14 @@ struct AlarmSettingView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         }
         .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button(action: {
+                    dismiss()
+                }, label: {
+                    Text("취소")
+                        .foregroundStyle(Color(hex: "#BE5F1B"))
+                })
+            }
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button(action: {
                     saveAlarmSettings()
@@ -73,7 +85,7 @@ struct AlarmSettingView: View {
            
            if isAlarmEnabled {
                // 기존 노티피케이션 취소
-               AlarmCancelService.cancelWeeklyBurstAll(weekdays: weekdays, hour: hour, minute: minute, second: 0, totalCount: 8)
+               NotificationService.cancelAllNotifications()
                
                // 새로운 노티피케이션 스케줄링
                NotificationService.scheduleWeeklyBurst(

@@ -1,9 +1,9 @@
-//
-//  MotionTestView.swift
-//  T8-NoFrank
-//
-//  Created by SeanCho on 8/8/25.
-//
+////
+////  MotionTestView.swift
+////  T8-NoFrank
+////
+////  Created by SeanCho on 8/8/25.
+////
 
 import SwiftUI
 import UIKit
@@ -239,4 +239,3 @@ struct MovingRockView: View {
         rockOffset = CGSize(width: px, height: py)
     }
 }
-
