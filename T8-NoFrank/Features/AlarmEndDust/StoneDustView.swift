@@ -72,11 +72,11 @@ struct StoneDustView: View {
         .onChange(of: blowDetection.blowStage) { _, stage in
             switch stage {
             case 1:
-                withAnimation { dustOffset = -100 }
+                withAnimation(.easeOut(duration: 1.5)) { dustOffset = -100 }
             case 2:
-                withAnimation { dustOffset = -200 }
+                withAnimation(.easeOut(duration: 1.5)) { dustOffset = -200 }
             case 3:
-                withAnimation {
+                withAnimation(.easeOut(duration: 2)) {
                     dustOffset = -400
                     newStoneOffset = 0
                     newStoneOpacity = 1
