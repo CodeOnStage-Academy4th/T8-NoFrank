@@ -36,8 +36,26 @@ struct HomeView: View {
                     .opacity(0.7)
                     .edgesIgnoringSafeArea(.all)
                 
+                ZStack {
+                    RoundedRectangle(cornerRadius: 12)
+                        .strokeBorder(Color.white.opacity(0))
+                        .background(Color.clear)
+                }
+                .frame(width: 300, height: 742)
+                .coordinateSpace(name: "RockArena")
+                .overlay(
+                    Group {
+                        if isEnabled {
+                            MovingRockView(isBreakable: false)
+                        }
+                    }
+                )
+                
                 if isEnabled {
-                    MovingRockView(isBreakable: false)
+                    Image("RotationGrass")
+                        .resizable()
+                        .scaledToFit()
+                    
                 } else {
                     Image("RockChain")
                         .resizable()
@@ -86,12 +104,6 @@ struct HomeView: View {
                 .toolbarBackground(Color(hex: "151515"), for: .navigationBar)
                 .toolbarBackground(.visible, for: .navigationBar)
                 .toolbarColorScheme(.dark, for: .navigationBar)
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarLeading) {
-                        Text("취소")
-                            .foregroundStyle(Color(hex: "#BE5F1B"))
-                    }
-                }
             }
             .presentationDetents([.fraction(0.6)])
             .presentationDragIndicator(.visible)
