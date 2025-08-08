@@ -10,7 +10,7 @@ import SwiftUI
 
 extension NotificationService {
     
-    //MARK: -- 선택한 요일에 요일당 8개의 노티 생성
+    //MARK: -- 선택한 요일에 요일당 8개의 노티 생성 (매주 반복)
     static func scheduleWeeklyBurst(weekdays: Set<Int>,
                                     hour: Int, minute: Int, second: Int,
                                     intervalSec: Int, count: Int,
@@ -59,17 +59,23 @@ extension NotificationService {
                 // 예측 가능한 식별자(요일·시·분·초·인덱스)
                 let id = "\(baseKey)_WD\(w)_\(hour)_\(minute)_\(second)_\(i)"
 
-                let trig = UNCalendarNotificationTrigger(dateMatching: comps, repeats: false)
+                // 🔥 매주 반복을 위한 DateComponents 설정
+                var weeklyComps = DateComponents()
+                weeklyComps.weekday = w
+                weeklyComps.hour = hour
+                weeklyComps.minute = minute
+                weeklyComps.second = second
+                
+                let trig = UNCalendarNotificationTrigger(dateMatching: weeklyComps, repeats: true)  // 🔥 repeats: true
                 let req  = UNNotificationRequest(identifier: id, content: content, trigger: trig)
                 
-                
                 center.add(req)
-                
+                print("📅 매주 반복 노티 스케줄링: 요일\(w), 시간\(hour):\(minute), 인덱스\(i)")
             }
         }
     }
 
-
+    //  매주 반복 노티 취소 함수도 수정
     static func cancelWeeklyBurst(weekdays: Set<Int>,
                                   hour: Int, minute: Int, second: Int,
                                   count: Int = 8,
@@ -81,6 +87,7 @@ extension NotificationService {
         }
         UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ids)
         UNUserNotificationCenter.current().removeDeliveredNotifications(withIdentifiers: ids)
+        print("🗑️ 매주 반복 노티 취소: \(ids.count)개")
     }
 }
 
