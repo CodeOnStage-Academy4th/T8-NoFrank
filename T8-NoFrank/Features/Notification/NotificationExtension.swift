@@ -137,3 +137,11 @@ extension NotificationDelegate {
         completionHandler()
     }
 }
+//MARK: -- 노티 전체 삭제
+extension NotificationService {
+    static func cancelAllNotifications() {
+        let c = UNUserNotificationCenter.current()
+        c.removeAllPendingNotificationRequests()
+        c.removeAllDeliveredNotifications()
+    }
+}
