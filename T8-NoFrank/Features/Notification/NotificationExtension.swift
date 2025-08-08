@@ -71,7 +71,7 @@ extension NotificationService {
 
     static func cancelWeeklyBurst(weekdays: Set<Int>,
                                   hour: Int, minute: Int, second: Int,
-                                  count: Int = 10,
+                                  count: Int = 8,
                                   baseKey: String = "WEEKLY_BURST") {
         let ids: [String] = weekdays.flatMap { w in
             (0..<count).map { i in

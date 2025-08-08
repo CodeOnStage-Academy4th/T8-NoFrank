@@ -32,6 +32,18 @@ struct HomeView: View {
                 Color.black
                     .opacity(0.7)
                     .edgesIgnoringSafeArea(.all)
+                
+                if isEnabled {
+                    MovingRockView(isBreakable: false)
+                } else {
+                    Image("RockChain")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 455, height: 342)
+                        .padding(.top, 65)
+                    
+                }
+                
                 VStack {
                     AlarmCard(isOn: $isEnabled, timeText: timeTextFormatted, selectedDays: alarmDays.filter { $0.isSelected }.map { $0.name }, date: alarmTime) {
                         isModal.toggle()
@@ -39,25 +51,13 @@ struct HomeView: View {
                     .padding(.top, 131)
                     .padding(.horizontal, 130)
                     
-                    if isEnabled {
-                        Image("RockDefault")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 189, height: 230)
-                            .padding(.top, 119)
-                    } else {
-                        Image("RockChain")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 455, height: 342)
-                            .padding(.top, 65)
-                        
-                    }
                     Spacer()
                 }
             }
         }
-        .onAppear { loadAlarm() }
+        .onAppear { loadAlarm()
+            NotificationService.requestAuthorization()
+        }
         .sheet(isPresented: $isModal) {
             NavigationStack {
                 AlarmSettingView(time: $alarmTime, days: $alarmDays)
@@ -81,6 +81,40 @@ struct HomeView: View {
         .onChange(of: isModal) { newValue in
             if newValue == false {
                 persistAlarm()
+            }
+        }
+        .onChange(of: isEnabled) { newValue in
+            
+            UserDefaults.standard.set(alarmTime, forKey: "alarmTime")
+            let comps = Calendar.current.dateComponents([.hour, .minute], from: alarmTime)
+            let hour = comps.hour ?? -1
+            let minute = comps.minute ?? -1
+            if comps.hour != nil && comps.minute != nil {
+                UserDefaults.standard.set(hour, forKey: "alarmHour")
+                UserDefaults.standard.set(minute, forKey: "alarmMinute")
+            }
+            let selectedNames = alarmDays.filter { $0.isSelected }.map { $0.name }
+            UserDefaults.standard.set(selectedNames, forKey: "alarmSelectedDays")
+            
+            
+            let weekdays: Set<Int> = Set(alarmDays.enumerated().compactMap { index, day in
+                day.isSelected ? index + 1 : nil
+            })
+            
+            if newValue == false{
+                NotificationService.cancelWeeklyBurst(weekdays: weekdays, hour: hour, minute: minute, second: 0)
+                print("모든 노티 삭제")
+            }else{
+                NotificationService.cancelWeeklyBurst(weekdays: weekdays, hour: hour, minute: minute, second: 0)
+                NotificationService.scheduleWeeklyBurst(
+                    weekdays: weekdays,
+                    hour: hour,
+                    minute: minute,
+                    second: 0,
+                    intervalSec: 30,  // 30초 간격
+                    count: 8          // 8개의 노티
+                )
+                print("노티 추가됨")
             }
         }
     }

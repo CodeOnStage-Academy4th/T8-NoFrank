@@ -13,9 +13,9 @@ import AVFoundation
 final class BlowDetection {
     private var recorder: AVAudioRecorder?
     private var timer: Timer?
-    private var blowStartTime: Date?
+    private var accumulatedBlowTime: Double = 0.0
 
-    var didBlow: Bool = false
+    var blowStage: Int = 0
 
     func start() {
         stop()
@@ -43,15 +43,17 @@ final class BlowDetection {
                     guard let self, let recorder = self.recorder else { return }
                     recorder.updateMeters()
                     let db = recorder.peakPower(forChannel: 0)
-//                    print("실시간 데시벨: \(db)")
+                    print("실시간 데시벨: \(db)")
                     if db > -10 {
-                        if self.blowStartTime == nil {
-                            self.blowStartTime = Date()
-                        } else if Date().timeIntervalSince(self.blowStartTime!) > 3 {
-                            self.didBlow = true
+                        self.accumulatedBlowTime += 0.1
+
+                        if self.blowStage == 0 && self.accumulatedBlowTime >= 1.0 {
+                            self.blowStage = 1
+                        } else if self.blowStage == 1 && self.accumulatedBlowTime >= 2.0 {
+                            self.blowStage = 2
+                        } else if self.blowStage == 2 && self.accumulatedBlowTime >= 3.0 {
+                            self.blowStage = 3
                         }
-                    } else {
-                        self.blowStartTime = nil
                     }
                 }
             }
