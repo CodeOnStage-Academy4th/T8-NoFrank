@@ -77,18 +77,21 @@ struct HomeView: View {
         
         .sheet(isPresented: $isModal) {
             NavigationStack {
-                AlarmSettingView(time: $alarmTime, days: $alarmDays)
-                    .navigationTitle("알람 편집")
-                    .navigationBarTitleDisplayMode(.inline)
-                    .toolbarBackground(Color(hex: "151515"), for: .navigationBar)
-                    .toolbarBackground(.visible, for: .navigationBar)
-                    .toolbarColorScheme(.dark, for: .navigationBar)
-                    .toolbar {
-                        ToolbarItem(placement: .navigationBarLeading) {
-                            Text("취소")
-                                .foregroundStyle(Color(hex: "#BE5F1B"))
-                        }
-                    }
+                AlarmSettingView(
+                    isAlarmEnabled: isEnabled, time: $alarmTime,
+                    days: $alarmDays  // 🔥 추가
+                                )
+                                .navigationTitle("알람 편집")
+                                .navigationBarTitleDisplayMode(.inline)
+                                .toolbarBackground(Color(hex: "151515"), for: .navigationBar)
+                                .toolbarBackground(.visible, for: .navigationBar)
+                                .toolbarColorScheme(.dark, for: .navigationBar)
+                                .toolbar {
+                                    ToolbarItem(placement: .navigationBarLeading) {
+                                        Text("취소")
+                                            .foregroundStyle(Color(hex: "#BE5F1B"))
+                                    }
+                                }
             }
             .presentationDetents([.fraction(0.6), .medium, .large])
             .presentationDragIndicator(.visible)
@@ -117,7 +120,7 @@ struct HomeView: View {
             })
             
             if newValue == false{
-                NotificationService.cancelWeeklyBurst(weekdays: weekdays, hour: hour, minute: minute, second: 0)
+                AlarmCancelService.cancelWeeklyBurstAll(weekdays: weekdays, hour: hour, minute: minute, second: 0, totalCount: 8)
                 print("모든 노티 삭제")
             }else{
                 NotificationService.cancelWeeklyBurst(weekdays: weekdays, hour: hour, minute: minute, second: 0)
