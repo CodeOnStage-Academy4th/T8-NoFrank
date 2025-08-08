@@ -10,7 +10,8 @@ import UIKit
 
 struct MotionTestView: View {
     private let shakeManager = MotionManager.shared
-    private let rockSize: CGFloat = 100
+    private let rockWidth: CGFloat = 230
+    private let rockHeight: CGFloat = 233
     @State private var containerSize: CGSize = .zero
     @State private var rockOffset: CGSize = .zero
     
@@ -19,10 +20,10 @@ struct MotionTestView: View {
             GeometryReader { proxy in
                 ZStack {
                     Color.clear
-                    Image("Rock0")
+                    Image(.rockDefault)
                         .resizable()
                         .scaledToFit()
-                        .frame(width: rockSize, height: rockSize)
+                        .frame(width: rockWidth, height: rockHeight)
                         .offset(rockOffset)
                         .position(x: proxy.size.width / 2, y: proxy.size.height / 2)
                 }
@@ -51,8 +52,8 @@ struct MotionTestView: View {
         
         let halfW = containerSize.width / 2
         let halfH = containerSize.height / 2
-        let xMargin = max(halfW - rockSize / 2, 0)
-        let yMargin = max(halfH - rockSize / 2, 0)
+        let xMargin = max(halfW - rockWidth / 2, 0)
+        let yMargin = max(halfH - rockHeight / 2, 0)
         
         let tx = ux == 0 ? .infinity : xMargin / abs(ux)
         let ty = uy == 0 ? .infinity : yMargin / abs(uy)
