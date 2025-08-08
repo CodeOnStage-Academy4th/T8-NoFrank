@@ -57,7 +57,9 @@ struct HomeView: View {
                 }
             }
         }
-        .onAppear { loadAlarm() }
+        .onAppear { loadAlarm()
+            NotificationService.requestAuthorization()
+        }
         .sheet(isPresented: $isModal) {
             NavigationStack {
                 AlarmSettingView(time: $alarmTime, days: $alarmDays)
@@ -79,6 +81,40 @@ struct HomeView: View {
         .onChange(of: isModal) { newValue in
             if newValue == false {
                 persistAlarm()
+            }
+        }
+        .onChange(of: isEnabled) { newValue in
+            
+            UserDefaults.standard.set(alarmTime, forKey: "alarmTime")
+            let comps = Calendar.current.dateComponents([.hour, .minute], from: alarmTime)
+            let hour = comps.hour ?? -1
+            let minute = comps.minute ?? -1
+            if comps.hour != nil && comps.minute != nil {
+                UserDefaults.standard.set(hour, forKey: "alarmHour")
+                UserDefaults.standard.set(minute, forKey: "alarmMinute")
+            }
+            let selectedNames = alarmDays.filter { $0.isSelected }.map { $0.name }
+            UserDefaults.standard.set(selectedNames, forKey: "alarmSelectedDays")
+            
+            
+            let weekdays: Set<Int> = Set(alarmDays.enumerated().compactMap { index, day in
+                day.isSelected ? index + 1 : nil
+            })
+            
+            if newValue == false{
+                NotificationService.cancelWeeklyBurst(weekdays: weekdays, hour: hour, minute: minute, second: 0)
+                print("모든 노티 삭제")
+            }else{
+                NotificationService.cancelWeeklyBurst(weekdays: weekdays, hour: hour, minute: minute, second: 0)
+                NotificationService.scheduleWeeklyBurst(
+                    weekdays: weekdays,
+                    hour: hour,
+                    minute: minute,
+                    second: 0,
+                    intervalSec: 30,  // 30초 간격
+                    count: 8          // 8개의 노티
+                )
+                print("노티 추가됨")
             }
         }
     }
