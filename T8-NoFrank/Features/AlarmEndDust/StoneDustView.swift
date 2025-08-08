@@ -29,9 +29,25 @@ struct StoneDustView: View {
             
             ZStack {
                 VStack {
-                    Image("stoneDust")
-                        .offset(x: dustOffset)
-                        .opacity(1.0 - min(1.0, Double(abs(dustOffset / 300))))
+                    Group {
+                        if blowDetection.blowStage == 0 {
+                            Image("stoneDust")
+                        } else if blowDetection.blowStage == 1 {
+                            Image("stoneDustA1")
+                            Image("stoneDustA2")
+                                .offset(x: dustOffset)
+                                .opacity(1.0 - min(1.0, Double(abs(dustOffset / 300))))
+                        } else if blowDetection.blowStage == 2 {
+                            Image("stoneDustB1")
+                            Image("stoneDustB2")
+                                .offset(x: dustOffset)
+                                .opacity(1.0 - min(1.0, Double(abs(dustOffset / 300))))
+                        } else if blowDetection.blowStage == 3 {
+                            Image("stoneDustB1")
+                                .offset(x: dustOffset)
+                                .opacity(1.0 - min(1.0, Double(abs(dustOffset / 300))))
+                        }
+                    }
                     Spacer()
                 }
                 .padding(.top, 426)
@@ -45,21 +61,22 @@ struct StoneDustView: View {
                     .opacity(newStoneOpacity)
             }
         }
-        .onChange(of: blowDetection.didBlow) { _, didBlow in
-            if didBlow && !triggerActivated {
-                withAnimation(.easeIn(duration: 1.0)) {
+        .onChange(of: blowDetection.blowStage) { _, stage in
+            switch stage {
+            case 1:
+                withAnimation { dustOffset = -100 }
+            case 2:
+                withAnimation { dustOffset = -200 }
+            case 3:
+                withAnimation {
                     dustOffset = -400
-                }
-                withAnimation(.easeOut(duration: 1.0)) {
                     newStoneOffset = 0
                     newStoneOpacity = 1
+                    triggerActivated = true
                 }
-                triggerActivated = true
                 blowDetection.stop()
-                // 메인으로 이동
-                //DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                //    router.currentScreen = .lobby
-                //}
+            default:
+                break
             }
         }
         .onDisappear {
