@@ -12,6 +12,7 @@ struct HomeView: View {
     @State private var isAnimating: Bool = false
     @State private var isModal: Bool = false
     @State private var Time: String = "00:00"
+    
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {
@@ -42,7 +43,8 @@ struct HomeView: View {
                                     .padding(.vertical, 10)
                             }
                         }
-                        .frame(width: 260, height: 144)
+                        .padding(.horizontal, 55)
+                        .padding(.vertical, 10)
                         .background(.black.opacity(0.48))
                         .cornerRadius(30)
                     }
@@ -73,7 +75,12 @@ struct HomeView: View {
                     .navigationBarTitleDisplayMode(.inline)
                     .toolbar {
                         ToolbarItem(placement: .navigationBarLeading) {
-                            Text("back")
+                            Text("취소")
+                                .foregroundStyle(Color(hex: "#BE5F1B"))
+                        }
+                        ToolbarItem(placement: .navigationBarTrailing) {
+                            Text("저장")
+                                .foregroundStyle(Color(hex: "#BE5F1B"))
                         }
                     }
             }
