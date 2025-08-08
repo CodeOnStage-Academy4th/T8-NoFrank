@@ -89,9 +89,8 @@ struct MovingRockView: View {
                     .scaledToFill()
                     .opacity(rockPhase > 4 ? 1 : 0)
             }
-            .frame(width: screenWidth, height: screenHeight)
         }
-        .frame(width: screenWidth, height: screenHeight)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .task {
             shakeManager.start()
             Task {
