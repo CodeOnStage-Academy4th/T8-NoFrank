@@ -8,9 +8,7 @@ final class ShakeManager {
     private let motionManager = CMMotionManager()
 
     private var degreesContinuation: AsyncStream<Int>.Continuation?
-
-    private var shakeThreshold: Double = 0.9  // 중력가속도(G)
-
+    
     private var shakeCooldown: TimeInterval = 0.35
     private var _lastShakeAt: Date = .distantPast  // .now()랑 coolDown만큼 차이나는지 비교되는 변수
 
@@ -26,7 +24,8 @@ final class ShakeManager {
 
     func start(
         updateInterval: TimeInterval = 1.0 / 60.0,
-        referenceFrame: CMAttitudeReferenceFrame = .xArbitraryZVertical
+        referenceFrame: CMAttitudeReferenceFrame = .xArbitraryZVertical,
+        shakeThreshold: Double = 2.0
     ) {
         stopAll()
 
@@ -37,7 +36,10 @@ final class ShakeManager {
         motionManager.startDeviceMotionUpdates(using: referenceFrame, to: .main)
         { [weak self] data, error in
             if let data {
-                self?.handleShakeDetection(from: data.userAcceleration)
+                self?.handleShakeDetection(
+                    from: data.userAcceleration,
+                    threshold: shakeThreshold
+                )
             }
         }
     }
@@ -48,17 +50,20 @@ final class ShakeManager {
         }
     }
 
-    private func handleShakeDetection(from accel: CMAcceleration) {
+    private func handleShakeDetection(
+        from accel: CMAcceleration,
+        threshold: Double
+    ) {
         let now = Date()
         guard now.timeIntervalSince(_lastShakeAt) >= shakeCooldown else {
             return
         }
-
+        
         let ax = accel.x
         let ay = accel.y
 
         let magnitude = sqrt(ax * ax + ay * ay)
-        guard magnitude >= shakeThreshold else { return }
+        guard magnitude >= threshold else { return }
 
         let degrees =
             (Int((atan2(ay, ax) * -180.0 / .pi).rounded()) + 270) % 360
