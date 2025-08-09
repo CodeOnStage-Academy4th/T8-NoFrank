@@ -18,6 +18,8 @@ struct HomeView: View {
     @State private var isModal: Bool = false
     @State private var Time: String = "00:00"
     @State private var alarmTime = Date()
+    @State private var shouldNavigate: Bool = false
+    @State private var targetScreen: String = ""
     @State private var alarmDays: [AlarmSettingView.DayItem] = [
         .init(name: "일", isSelected: false),
         .init(name: "월", isSelected: false),
