@@ -45,7 +45,7 @@ struct MovingRockView: View {
     @State private var physicsTask: Task<Void, Never>? = nil
     
     private var rockImageName: String {
-        "Rock\(rockPhase)\(isRockPain ? "Pain" : "")"
+        "Rock\(rockPhase)\(isRockPain ? "pain" : "")"
     }
     @State private var rockPhase: Int = 0
     @State private var rockPhaseCount: Int = 0
