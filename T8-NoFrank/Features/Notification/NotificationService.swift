@@ -66,12 +66,30 @@ struct AlarmCancelService {
                                  totalCount: Int,
                                  baseKey: String = "WEEKLY_BURST") {
         let todayWeekday = Calendar.current.component(.weekday, from: Date())
+        print(todayWeekday)
+        
         let ids: [String] = (0..<totalCount).map { i in
             "\(baseKey)_WD\(todayWeekday)_\(hour)_\(minute)_\(second)_\(i)"
         }
+        print(ids)
         let center = UNUserNotificationCenter.current()
         center.removePendingNotificationRequests(withIdentifiers: ids)
         center.removeDeliveredNotifications(withIdentifiers: ids)
+        
+        print("오늘거 지워짐")
+    }
+}
+
+// 공용 매핑 유틸
+enum WeekdayMap {
+    static let nameToInt: [String:Int] = ["일":1,"월":2,"화":3,"수":4,"목":5,"금":6,"토":7]
+    static let intToName: [Int:String] = [1:"일",2:"월",3:"화",4:"수",5:"목",6:"금",7:"토"]
+
+    static func toInts(from names: [String]) -> Set<Int> {
+        Set(names.compactMap { nameToInt[$0] })
+    }
+    static func toNames(from ints: Set<Int>) -> [String] {
+        ints.compactMap { intToName[$0] }.sorted { (nameToInt[$0] ?? 0) < (nameToInt[$1] ?? 0) }
     }
 }
 

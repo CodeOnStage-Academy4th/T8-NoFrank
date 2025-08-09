@@ -106,6 +106,7 @@ struct MovingRockView: View {
     }
     
     private func handleShakeDegree(_ deg: Int) async {
+        
         guard containerSize != .zero else { return }
         
         if isBreakable { isRockPain = true }
@@ -143,11 +144,41 @@ struct MovingRockView: View {
         
         if isBreakable {
             rockPhaseCount += 1
-            if rockPhaseCount > 5 {
-                if rockPhase == 5 {
+            if rockPhaseCount > 2 {
+                if rockPhase == 2 {
                     rockPhase = 0
                     rockPhaseCount = 0
                     // 이때 알람꺼지면서 화면 전환
+                    var selectedTime: Date = {
+                        var comps = Calendar.current.dateComponents([.hour, .minute], from: Date())
+                        comps.hour = UserDefaults.standard.integer(forKey: "alarmHour")
+                        comps.minute = UserDefaults.standard.integer(forKey: "alarmMinute")
+                        return Calendar.current.date(from: comps) ?? Date()
+                    }()
+                    
+                    let comps = Calendar.current.dateComponents([.hour, .minute, .second], from: selectedTime)
+                    let h = comps.hour ?? 0
+                    let m = comps.minute ?? 0
+                    let s = comps.second ?? 0
+                    print(h,m,s)
+                    for i in 0..<8{
+                        var sec:Int{
+                            s + (i * 30)
+                        }
+                        var min:Int{
+                            sec / 60 + m
+                        }
+                        
+                        var hour:Int{
+                            min / 60 + h
+                        }
+                        AlarmCancelService.cancelTodayBurst(
+                            hour: h % 24, minute: min % 60, second: sec % 60,
+                            totalCount: 8,
+                            baseKey: "WEEKLY_BURST"
+                        )
+                    }
+                   
                     AppRouter.shared.navigate(.stonedust)
                 } else {
                     rockPhase += 1
