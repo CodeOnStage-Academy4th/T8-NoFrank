@@ -200,25 +200,25 @@ struct HomeView: View {
         }
         
         // 앱 시작 시 매주 반복 노티 복원
-        if isEnabled {
-            let comps = Calendar.current.dateComponents([.hour, .minute], from: alarmTime)
-            let hour = comps.hour ?? 0
-            let minute = comps.minute ?? 0
-            
-            let weekdays: Set<Int> = Set(alarmDays.enumerated().compactMap { index, day in
-                day.isSelected ? index + 1 : nil
-            })
-            
-            NotificationService.scheduleWeeklyBurst(
-                weekdays: weekdays,
-                hour: hour,
-                minute: minute,
-                second: 0,
-                intervalSec: 30,
-                count: 8
-            )
-            print("앱 시작 시 매주 반복 노티 복원 완료")
-        }
+//        if isEnabled {
+//            let comps = Calendar.current.dateComponents([.hour, .minute], from: alarmTime)
+//            let hour = comps.hour ?? 0
+//            let minute = comps.minute ?? 0
+//            
+//            let weekdays: Set<Int> = Set(alarmDays.enumerated().compactMap { index, day in
+//                day.isSelected ? index + 1 : nil
+//            })
+//            
+//            NotificationService.scheduleWeeklyBurst(
+//                weekdays: weekdays,
+//                hour: hour,
+//                minute: minute,
+//                second: 0,
+//                intervalSec: 30,
+//                count: 8
+//            )
+//            print("앱 시작 시 매주 반복 노티 복원 완료")
+//        }
     }
 }
 
