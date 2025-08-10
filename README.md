@@ -1,12 +1,9 @@
 # 🪨 흔들면 돌이 깨지는 돌시계! CRock
-
-<img width="1920" height="1080" alt="GalleryWalk1" src="https://github.com/user-attachments/assets/a76b05b0-8395-4cfb-bbbc-dd3e9ee32990" />
-
-> 알람이 울리면 폰 안에 돌을 흔들어서 깨야 알람이 끊기는 앱
-
 [![Swift](https://img.shields.io/badge/Swift-5.9-orange.svg)]()
 [![Xcode](https://img.shields.io/badge/Xcode-15.0-blue.svg)]()
 [![License](https://img.shields.io/badge/license-MIT-green.svg)]()
+
+<img width="1920" height="1080" alt="GalleryWalk1" src="https://github.com/user-attachments/assets/a76b05b0-8395-4cfb-bbbc-dd3e9ee32990" />
 
 
 ## 📱 소개
