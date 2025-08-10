@@ -8,7 +8,6 @@
 [![Xcode](https://img.shields.io/badge/Xcode-15.0-blue.svg)]()
 [![License](https://img.shields.io/badge/license-MIT-green.svg)]()
 
----
 
 ## 📱 소개
 
@@ -16,6 +15,10 @@
 
 [🔗 앱스토어/웹 링크](https://example.com)
 
+## 🌟 주요 기능
+<img width="1920" height="1080" alt="GalleryWalk2" src="https://github.com/user-attachments/assets/0f334b8d-6a02-450f-a0e3-b425dc4ac58c" />
+
+---
 
 ## 📆 프로젝트 기간
 -  Apple Developer Academy @POSTECH 4기 비공식 해커톤 행사 Code on Stage 
@@ -25,11 +28,8 @@
 ## 🛠 기술 스택
 
 - Swift / SwiftUI
+- Core Motion, WidgetKit, AVFoundation, UserNotifications
 - 기타 도구: Figma, Notion
-
-
-## 🌟 주요 기능
-<img width="1920" height="1080" alt="GalleryWalk2" src="https://github.com/user-attachments/assets/0f334b8d-6a02-450f-a0e3-b425dc4ac58c" />
 
 
 ## 🧑‍💻 팀 소개
@@ -42,7 +42,6 @@
 | 이토 | Developer | [@Ito](https://github.com/changjaemun) |
 | 조이드 | Developer | [@nakisara01](https://github.com/nakisara01) |
 | 루트 | Developer | [@maengjj](https://github.com/maengjj) |
-
 
 
 ## 📎 프로젝트 문서
