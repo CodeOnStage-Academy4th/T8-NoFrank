@@ -42,6 +42,6 @@
 
 
 ## 📎 프로젝트 문서
-- [외부 노션] (https://www.notion.so/posacademy/T8-2482b843d5af8010a5b6e28ab7b3ac7d?source=copy_link)
+- [외부 노션](https://www.notion.so/posacademy/T8-2482b843d5af8010a5b6e28ab7b3ac7d?source=copy_link)
 - [내부 노션](https://www.notion.so/posacademy/NO-FRANK-2482b843d5af8095b452eb262f975e8b?source=copy_link)
 
