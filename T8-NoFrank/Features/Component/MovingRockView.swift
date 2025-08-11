@@ -11,6 +11,7 @@ import QuartzCore
 
 struct MovingRockView: View {
     @State var isBreakable: Bool
+    @State var isClockEnd: Bool = false
     
     private let shakeManager = MotionManager.shared
     private var rockWidth: CGFloat {
@@ -85,6 +86,9 @@ struct MovingRockView: View {
                     .scaledToFill()
                     .opacity(rockPhase > 4 ? 1 : 0)
             }
+            .onAppear() {
+                isClockEnd.toggle()
+            }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .task {
@@ -144,8 +148,8 @@ struct MovingRockView: View {
         
         if isBreakable {
             rockPhaseCount += 1
-            if rockPhaseCount > 2 {
-                if rockPhase == 2 {
+            if rockPhaseCount > 4 {
+                if rockPhase == 4 {
                     rockPhase = 0
                     rockPhaseCount = 0
                     // 이때 알람꺼지면서 화면 전환

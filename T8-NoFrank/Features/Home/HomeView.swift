@@ -148,10 +148,15 @@ struct HomeView: View {
     }
     
     private var timeTextFormatted: String {
-        let formatter = DateFormatter()
-        formatter.locale = Locale(identifier: "ko_KR")
-        formatter.dateFormat = "HH:mm"
-        return formatter.string(from: alarmTime)
+        let comps = Calendar.current.dateComponents([.hour, .minute], from: alarmTime)
+        var hour = comps.hour ?? 0
+        let minute = comps.minute ?? 0
+        if hour == 0 {
+            hour = 12
+        } else if hour > 12 {
+            hour -= 12
+        }
+        return String(format: "%02d:%02d", hour, minute)
     }
     private func checkNotificationNavigation() {
         if UserDefaults(suiteName: AppConstants.appGroupID)!.bool(forKey: "shouldNavigate") {
@@ -231,11 +236,11 @@ struct HomeView: View {
 //            let comps = Calendar.current.dateComponents([.hour, .minute], from: alarmTime)
 //            let hour = comps.hour ?? 0
 //            let minute = comps.minute ?? 0
-//            
+//
 //            let weekdays: Set<Int> = Set(alarmDays.enumerated().compactMap { index, day in
 //                day.isSelected ? index + 1 : nil
 //            })
-//            
+//
 //            NotificationService.scheduleWeeklyBurst(
 //                weekdays: weekdays,
 //                hour: hour,
