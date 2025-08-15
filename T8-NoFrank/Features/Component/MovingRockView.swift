@@ -44,6 +44,8 @@ struct MovingRockView: View {
     @State private var velocity: CGVector = .zero
     @State private var tiltAccel: CGVector = .zero
     @State private var physicsTask: Task<Void, Never>? = nil
+    @State private var shakeTask: Task<Void, Never>? = nil
+    @State private var tiltTask: Task<Void, Never>? = nil
     
     private var rockImageName: String {
         "Rock\(rockPhase)\(isRockPain ? "pain" : "")"
@@ -95,21 +97,30 @@ struct MovingRockView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .task {
             shakeManager.start()
-            Task {
+            shakeTask = Task {
                 for await deg in shakeManager.shakeDegreesStream {
                     await handleShakeDegree(deg)
                 }
             }
-            
-            Task {
+
+            tiltTask = Task {
                 for await vec in shakeManager.tiltUnitStream {
                     await handleTiltVector(vec)
                 }
             }
+            
             physicsTask = Task { await runPhysicsLoop() }
         }
+
         .onDisappear {
             physicsTask?.cancel()
+            physicsTask = nil
+            isRockPainTask?.cancel()
+            isRockPainTask = nil
+            shakeTask?.cancel()
+            shakeTask = nil
+            tiltTask?.cancel()
+            tiltTask = nil
             shakeManager.stopAll()
         }
     }
@@ -275,3 +286,4 @@ struct MovingRockView: View {
         rockOffset = CGSize(width: px, height: py)
     }
 }
+
