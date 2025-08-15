@@ -15,12 +15,10 @@ final class MotionManager {
 
     private let startThreshold: Double
     private let referenceFrame: CMAttitudeReferenceFrame
-
-    static let shared = MotionManager()
-
+    
     private let motionManager = CMMotionManager()
 
-    private init(
+    init(
         updateInterval: TimeInterval = 1.0 / 60.0,
         shakeCooldown: TimeInterval = 0.01,
         startThreshold: Double = 0.6,

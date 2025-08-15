@@ -13,7 +13,7 @@ struct MovingRockView: View {
     @State var isBreakable: Bool
     @State var isClockEnd: Bool = false
     
-    private let shakeManager = MotionManager.shared
+    private let shakeManager = MotionManager()
     private var rockWidth: CGFloat {
         switch rockPhase {
         case 0: return 188.95
