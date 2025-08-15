@@ -13,7 +13,7 @@ struct MovingRockView: View {
     @State var isBreakable: Bool
     @State var isClockEnd: Bool = false
     
-    private let shakeManager = MotionManager.shared
+    private let shakeManager = MotionManager()
     private var rockWidth: CGFloat {
         switch rockPhase {
         case 0: return 188.95
@@ -44,6 +44,8 @@ struct MovingRockView: View {
     @State private var velocity: CGVector = .zero
     @State private var tiltAccel: CGVector = .zero
     @State private var physicsTask: Task<Void, Never>? = nil
+    @State private var shakeTask: Task<Void, Never>? = nil
+    @State private var tiltTask: Task<Void, Never>? = nil
     
     private var rockImageName: String {
         "Rock\(rockPhase)\(isRockPain ? "pain" : "")"
@@ -52,6 +54,8 @@ struct MovingRockView: View {
     @State private var rockPhaseCount: Int = 0
     @State private var isRockPain: Bool = false
     @State private var isRockPainTask: Task<Void, Never>? = nil
+    
+    private let rockThrowingDuration: TimeInterval = 0.01
     
     var body: some View {
         VStack {
@@ -93,20 +97,32 @@ struct MovingRockView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .task {
             shakeManager.start()
-            Task {
+            shakeTask = Task {
                 for await deg in shakeManager.shakeDegreesStream {
                     await handleShakeDegree(deg)
                 }
             }
-            
-            Task {
+
+            tiltTask = Task {
                 for await vec in shakeManager.tiltUnitStream {
                     await handleTiltVector(vec)
                 }
             }
+            
             physicsTask = Task { await runPhysicsLoop() }
         }
-        .onDisappear { physicsTask?.cancel(); shakeManager.stopAll() }
+
+        .onDisappear {
+            physicsTask?.cancel()
+            physicsTask = nil
+            isRockPainTask?.cancel()
+            isRockPainTask = nil
+            shakeTask?.cancel()
+            shakeTask = nil
+            tiltTask?.cancel()
+            tiltTask = nil
+            shakeManager.stopAll()
+        }
     }
     
     private func handleShakeDegree(_ deg: Int) async {
@@ -114,8 +130,8 @@ struct MovingRockView: View {
         guard containerSize != .zero else { return }
         
         if isBreakable { isRockPain = true }
-        isRockPainTask = Task { @MainActor in
-            try? await Task.sleep(for: .seconds(1))
+        isRockPainTask = Task {
+            try? await Task.sleep(for: .seconds(rockThrowingDuration))
             isRockPainTask?.cancel()
             isRockPain = false
         }
@@ -138,22 +154,22 @@ struct MovingRockView: View {
         let dy = uy * t
         
         velocity = .zero
-        withAnimation(.easeOut(duration: 0.1)) {
+        withAnimation(.easeOut(duration: rockThrowingDuration)) {
             rockOffset = CGSize(width: dx, height: dy)
         }
         
         UIImpactFeedbackGenerator(style: .medium).impactOccurred()
         
-        try? await Task.sleep(for: .seconds(0.1))
+        try? await Task.sleep(for: .seconds(rockThrowingDuration))
         
         if isBreakable {
             rockPhaseCount += 1
-            if rockPhaseCount > 4 {
+            if rockPhaseCount > 20 {
                 if rockPhase == 4 {
                     rockPhase = 0
                     rockPhaseCount = 0
                     // 이때 알람꺼지면서 화면 전환
-                    var selectedTime: Date = {
+                    let selectedTime: Date = {
                         var comps = Calendar.current.dateComponents([.hour, .minute], from: Date())
                         comps.hour = UserDefaults.standard.integer(forKey: "alarmHour")
                         comps.minute = UserDefaults.standard.integer(forKey: "alarmMinute")
@@ -270,3 +286,4 @@ struct MovingRockView: View {
         rockOffset = CGSize(width: px, height: py)
     }
 }
+

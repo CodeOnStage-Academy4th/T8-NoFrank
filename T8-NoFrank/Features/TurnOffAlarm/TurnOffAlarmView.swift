@@ -15,6 +15,9 @@ struct TurnOffAlarmView: View {
         VStack {
             ZStack {
                 Image("Home_Background")
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: screenWidth, height: screenHeight)
                 Text(String(format: "%02d:%02d", alarmHour, alarmMinute))
                     .font(.alarmTime)
                     .foregroundColor(.white)

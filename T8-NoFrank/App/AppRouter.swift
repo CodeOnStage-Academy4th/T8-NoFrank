@@ -17,7 +17,7 @@ enum AppScreen {
 @MainActor
 final class AppRouter: ObservableObject {
     static let shared = AppRouter()
-    @Published var currentScreen: AppScreen = .home
+    @Published private(set) var currentScreen: AppScreen = .home
 
     func navigate(_ screen: AppScreen) {
         currentScreen = screen

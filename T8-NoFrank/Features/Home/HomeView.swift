@@ -85,6 +85,7 @@ struct HomeView: View {
                     Spacer()
                 }
             }
+            .ignoresSafeArea(.all)
         }
         .onAppear { loadAlarm()
             NotificationService.requestAuthorization()
