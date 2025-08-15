@@ -53,6 +53,8 @@ struct MovingRockView: View {
     @State private var isRockPain: Bool = false
     @State private var isRockPainTask: Task<Void, Never>? = nil
     
+    private let rockThrowingDuration: TimeInterval = 0.01
+    
     var body: some View {
         VStack {
             GeometryReader { proxy in
@@ -106,7 +108,10 @@ struct MovingRockView: View {
             }
             physicsTask = Task { await runPhysicsLoop() }
         }
-        .onDisappear { physicsTask?.cancel(); shakeManager.stopAll() }
+        .onDisappear {
+            physicsTask?.cancel()
+            shakeManager.stopAll()
+        }
     }
     
     private func handleShakeDegree(_ deg: Int) async {
@@ -114,8 +119,8 @@ struct MovingRockView: View {
         guard containerSize != .zero else { return }
         
         if isBreakable { isRockPain = true }
-        isRockPainTask = Task { @MainActor in
-            try? await Task.sleep(for: .seconds(1))
+        isRockPainTask = Task {
+            try? await Task.sleep(for: .seconds(rockThrowingDuration))
             isRockPainTask?.cancel()
             isRockPain = false
         }
@@ -138,22 +143,22 @@ struct MovingRockView: View {
         let dy = uy * t
         
         velocity = .zero
-        withAnimation(.easeOut(duration: 0.1)) {
+        withAnimation(.easeOut(duration: rockThrowingDuration)) {
             rockOffset = CGSize(width: dx, height: dy)
         }
         
         UIImpactFeedbackGenerator(style: .medium).impactOccurred()
         
-        try? await Task.sleep(for: .seconds(0.1))
+        try? await Task.sleep(for: .seconds(rockThrowingDuration))
         
         if isBreakable {
             rockPhaseCount += 1
-            if rockPhaseCount > 4 {
+            if rockPhaseCount > 20 {
                 if rockPhase == 4 {
                     rockPhase = 0
                     rockPhaseCount = 0
                     // 이때 알람꺼지면서 화면 전환
-                    var selectedTime: Date = {
+                    let selectedTime: Date = {
                         var comps = Calendar.current.dateComponents([.hour, .minute], from: Date())
                         comps.hour = UserDefaults.standard.integer(forKey: "alarmHour")
                         comps.minute = UserDefaults.standard.integer(forKey: "alarmMinute")

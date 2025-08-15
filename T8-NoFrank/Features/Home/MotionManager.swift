@@ -10,7 +10,7 @@ final class MotionManager {
     private var tiltUnitContinuation: AsyncStream<CGVector>.Continuation?
 
     private let updateInterval: TimeInterval
-    private let shakeCooldown: TimeInterval
+    private var shakeCooldown: TimeInterval
     private var _lastShakeAt: Date  // .now()랑 coolDown만큼 차이나는지 비교되는지 변수
 
     private let startThreshold: Double
@@ -22,7 +22,7 @@ final class MotionManager {
 
     private init(
         updateInterval: TimeInterval = 1.0 / 60.0,
-        shakeCooldown: TimeInterval = 0.15,
+        shakeCooldown: TimeInterval = 0.01,
         startThreshold: Double = 0.6,
         referenceFrame: CMAttitudeReferenceFrame = .xArbitraryZVertical
     ) {
@@ -49,7 +49,11 @@ final class MotionManager {
         self.referenceFrame = referenceFrame
     }
 
-    func start() {
+    func start(
+        shakeCooldown: TimeInterval = 0.01,
+    ) {
+        self.shakeCooldown = shakeCooldown
+        
         stopAll()
 
         motionManager.deviceMotionUpdateInterval = updateInterval
